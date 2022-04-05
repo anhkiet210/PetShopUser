@@ -24,7 +24,6 @@ const Header = () => {
     }
 
     const handleLogout = () => {
-        setLoading(true)
         dispatch(UserSlice.actions.logout(currentUser))
         localStorage.removeItem("accessToken")
         setLoading(false);

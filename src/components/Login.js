@@ -41,8 +41,8 @@ const Login = () => {
             dispatch(UserSlice.actions.loginSuccess(resUser))
             localStorage.setItem("accessToken", token)
             setLoading(false);
-            <Navigate to="/" />
-            // console.log(res);
+            // <Navigate to="/" />
+            window.location.href="/"
         }catch(err){
             setLoading(false)
             setErr(true)
