@@ -8,7 +8,7 @@ import UserSlice from '../../redux/userSlice';
 import { getProfile } from '../../redux/callApi';
 
 const Header = () => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [currentUser,setCurrentUser] = useState()
     const tokenLocal = localStorage.getItem("accessToken")
     const [showCart, setShowCart] = useState(false)

@@ -59,6 +59,7 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
             )
             const resUser = await res.data
             setCurrentUser(resUser)
+            setLoading(false)
         }catch(err){
             setLoading(false)
         }
