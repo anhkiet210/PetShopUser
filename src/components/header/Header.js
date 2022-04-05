@@ -28,8 +28,8 @@ const Header = () => {
         dispatch(UserSlice.actions.logout(currentUser))
         localStorage.removeItem("accessToken")
         setLoading(false);
-        <Navigate to="/" />
-        // window.location.href=""
+        // <Navigate to="/" />
+        window.location.href="/"
     }
 
     return (
