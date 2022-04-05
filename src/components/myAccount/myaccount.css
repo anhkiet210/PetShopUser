@@ -1,0 +1,29 @@
+.profile, 
+.change-pass{
+    margin-top: 20px;
+}
+.my-account__title{
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+.group-ip{
+    margin-top: 20px;
+}
+
+.my-account__label{
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.input-gender{
+    margin-left: 50px;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.input-gender:checked{
+    background-color: aqua;
+}
