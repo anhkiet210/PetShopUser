@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import './myaccount.css'
 
-const Profile = () => {
+const Profile = (props) => {
 
     const [name, setName] = useState()
     const [email, setEmail] = useState()
-    const [tel, setTel] = useState()
+    const [phone, setPhone] = useState()
     const [birth, setBirth] = useState()
     const [gender, setGender] = useState()
-    
-    const currentUser = useSelector(state => state.user.currentUser)
-    console.log(currentUser);
+
+    useEffect( () => {
+        setName(props.infoUser?.name)
+        setEmail(props.infoUser?.email)
+        setPhone(props.infoUser?.phone)
+        setBirth(props.infoUser?.birth)
+        setGender(props.infoUser?.gender)
+    }) 
+    console.log(name, email, phone, birth, gender);
 
     return(
         <div className="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
@@ -25,6 +31,7 @@ const Profile = () => {
                             className="input"
                             required
                             id="name"
+                            value={name}
                         />
                     </div>
                     <div className="group-ip">
@@ -34,15 +41,19 @@ const Profile = () => {
                             className="input"
                             required
                             id="email"
+                            value={email}
+                            readOnly
+                            disabled
                         />
                     </div>
                     <div className="group-ip">
-                        <label className="my-account__label" htmlFor="tel">Số điện thoại</label>
+                        <label className="my-account__label" htmlFor="phone">Số điện thoại</label>
                         <input 
                             type="tel"
                             className="input"
                             required
-                            id="tel"
+                            id="phone"
+                            value={phone}
                         />
                     </div>
                     <div className="group-ip">
@@ -52,6 +63,7 @@ const Profile = () => {
                             className="input"
                             required
                             id="birth"
+                            value={birth}
                         />
                     </div>
                     <div className="group-ip">
@@ -60,16 +72,15 @@ const Profile = () => {
                             type="radio"
                             className="input-gender"
                             required
-                            id="gender"
-                            value="Nam"
+                            value={!gender ? "" : gender}
                             name="gender"
                         /> Nam
                         <input 
                             type="radio"
                             className="input-gender"
                             required
-                            id="gender"
                             name="gender"
+                            value={!gender ? "" : gender}
                         /> Nữ
                     </div>
                     <div className="group-ip">

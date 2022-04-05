@@ -11,7 +11,7 @@ const Register = () => {
     const [password, setPassword] = useState()
     const [phone, setPhone] = useState()
     const [showPass, setShowPass] = useState(false)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [err, setErr] = useState(false)
     const newUser = {
         "name": name,
@@ -40,13 +40,18 @@ const Register = () => {
         setPhone(e.target.value)
     }
 
-    const Register = () => {
+    const RegisterAPI = (user) => {
         try{
-            const auth = async () => {
+            setLoading(true)
+            const reg = async () => {
                 const res = await axios.post(
-                    ""
-                )
+                    "https://petshop347.herokuapp.com/api/auth/register", user
+                );
+                alert("Đăng ký tài khoản thành công!");
+                window.location.href="/login"
             }
+            setLoading(false)
+            reg()
         }catch(err){
             setLoading(false)
             setErr(true)
@@ -55,6 +60,7 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        RegisterAPI(newUser)
     }
 
     return loading ? <Loading /> :(
@@ -102,9 +108,10 @@ const Register = () => {
                                 name="phone" 
                                 placeholder="Số điện thoại" 
                                 required 
+                                minLength="10"
                                 onChange={(e) => getPhone(e)}
                             />
-                            {/* <p style={{ color: '#ff4d4d', marginBottom: '15px', fontWeight: 'bold' }}>Email hoặc mật khẩu không đúng</p> */}
+                            { err && <p style={{ color: '#ff4d4d', marginBottom: '15px', fontWeight: 'bold' }}>Lỗi</p>}
                             <input type="submit" id="dangnhap" name="dangnhap" value="Đăng ký" />
                         </form>
                     </div>

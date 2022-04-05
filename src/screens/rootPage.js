@@ -31,10 +31,10 @@ const RootPage = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/Checkout" element={<CheckoutPage />} />
       <Route path="/store" element={<Outlet />} >
-        <Route path=":slug.:id" element={<StorePage />} />
+        <Route path=":slug.:id.html" element={<StorePage />} />
       </Route>
       <Route path="/product" element={<Outlet />} >
-        <Route path=":id" element={<ProductPage />}/>
+        <Route path=":slug.:id.html" element={<ProductPage />}/>
       </Route>
       <Route path="/introduce" element={<Introduce />} />
       <Route path="/my-account" element={localStorage.getItem("accessToken") ? <MyAccountPage /> : <Navigate to="/" />} />

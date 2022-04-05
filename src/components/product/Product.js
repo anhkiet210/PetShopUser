@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { chuyenDoiURL } from "../../redux/changeText";
 
 const Product = (props) => {
     return (
@@ -9,7 +10,7 @@ const Product = (props) => {
                     <img src={props && props.img.url} alt={props.productName} />
                 </div>
                 <div className="product__body">
-                    <h3 className="product__name"><Link to={`/product/${props.id}`}>{props.productName}</Link></h3>
+                    <h3 className="product__name"><Link to={`/product/${chuyenDoiURL(props.productName)}.${props.id}.html`}>{props.productName}</Link></h3>
                     <h4 className="product__price">
                         {props.cost.toLocaleString("it-IT", {
                             style: "currency",
