@@ -9,6 +9,7 @@ import { getProfile } from '../../redux/callApi';
 
 const Header = () => {
     const [loading, setLoading] = useState(true)
+    // const user = useSelector(state => state.user.currentUser)
     const [currentUser,setCurrentUser] = useState()
     const tokenLocal = localStorage.getItem("accessToken")
     const [showCart, setShowCart] = useState(false)

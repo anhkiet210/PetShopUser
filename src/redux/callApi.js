@@ -67,3 +67,23 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
 
     fetchData()
 }
+
+// add to cart
+export const addToCart = (id, header) => {
+    try{
+        const fetchData = async () => {
+            const res = await axios.post(
+                `https://petshop347.herokuapp.com/api/carts/${id}`, 
+                {
+                    headers: header
+                }
+            )
+            console.log(res);
+        }
+
+        fetchData()
+    }catch(err){
+        console.log(err);
+    }
+
+}
