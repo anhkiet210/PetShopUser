@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { chuyenDoiURL } from "../../redux/changeText";
 import { addToCart } from "../../redux/callApi";
+import Loading from '../UI/Loading'
 
 const Product = (props) => {
-    const token = localStorage.getItem("accessToken")
-    const header = {x_authorization: token}
-    // console.log(props.id)
-    return (
+    const [loading, setLoading] = useState(false)
+    const header = { x_authorization: localStorage.getItem("accessToken") }
+   
+    console.log(props.myCart)
+    return loading ? <Loading /> : (
         <div className="col-lg-3 col-md-4 col-sm-6 col-12">
             <div className="product">
                 <div className="product__img">
@@ -23,7 +25,7 @@ const Product = (props) => {
                     </h4>
                 </div>
                 <div className="add-to-cart">
-                    <button className="add-to-cart-btn" onClick={ () => addToCart(props.id, header)}>
+                    <button className="add-to-cart-btn" onClick={ () => addToCart(props.id, header, setLoading, props.myCart) }>
                         <i className="fal fa-cart-plus" />
                         Thêm vào giỏ
                     </button>

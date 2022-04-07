@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '../../image/logo.png';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Loading from '../UI/Loading';
 import CartDropdown from './CartDtopdown';
 import UserSlice from '../../redux/userSlice';
-import { getProfile } from '../../redux/callApi';
+import { getProfile, getMyCart } from '../../redux/callApi';
+import axios from 'axios';
 
 const Header = () => {
     const [loading, setLoading] = useState(true)
@@ -13,12 +14,51 @@ const Header = () => {
     const [currentUser,setCurrentUser] = useState()
     const tokenLocal = localStorage.getItem("accessToken")
     const [showCart, setShowCart] = useState(false)
+    const [myCart, setMyCart] = useState()
+    const [listProducts, setListProducts] = useState()
     const dispatch = useDispatch()
     const header = {x_authorization: tokenLocal}
+    const [filterCart, setFilterCart] = useState()
 
     useEffect( () => {
         getProfile(setCurrentUser, header, setLoading)
     },[tokenLocal])
+
+    useEffect( () => {
+        getMyCart(header, setLoading, setMyCart, dispatch)
+    }, [])
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const resProducts = await axios.get(
+                    "https://petshop347.herokuapp.com/api/products"
+                )
+                setListProducts(resProducts.data)
+                setLoading(false)
+            } catch (err) {
+                setLoading(false)
+            }
+        }
+        fetchProducts()
+    }, [])
+
+    useEffect( () => {
+        filterProduct()
+    }, [myCart])
+
+    const filterProduct = () => {
+        const test = []
+        for(let i = 0; i < listProducts?.length; i++){
+            for(let j = 0; j < myCart?.length; j++){
+                if(listProducts[i]._id === myCart[j].idProduct){
+                    const obj = {...listProducts[i], ...myCart[j]}
+                    test.push(obj)
+                }
+            }
+        }
+        setFilterCart(test)
+    }
 
     const handleShowCart = () => {
         setShowCart(!showCart)
@@ -31,6 +71,9 @@ const Header = () => {
         // <Navigate to="/" />
         window.location.href="/"
     }
+
+    // console.log(myCart);
+    // console.log(filterCart);
 
     return (
         <>
@@ -83,9 +126,14 @@ const Header = () => {
                             <div className="cart">
                                 <button className="cart__link" onClick={() => handleShowCart()}>
                                     <i className="fal fa-cart-plus" />  Giỏ hàng
-                                    <div className="sqy">0</div>
+                                    <div className="sqy">{myCart?.length || 0}</div>
                                 </button>
-                                { currentUser && showCart && <CartDropdown />}
+                                { currentUser && 
+                                    showCart && 
+                                    <CartDropdown 
+                                        cart={filterCart}
+                                    />
+                                }
                             </div>
                             {
                                 !currentUser ? 

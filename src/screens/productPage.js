@@ -37,7 +37,8 @@ const ProductPage = () => {
                     <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                         {
                             currentProduct &&
-                            <ProductDetail 
+                            <ProductDetail
+                                idProduct = {currentProduct._id} 
                                 productName={currentProduct.productName}
                                 cost={currentProduct.cost}
                             />

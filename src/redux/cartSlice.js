@@ -7,13 +7,14 @@ const CartSlice = createSlice({
     },
     reducers: {
         addToCart: (state, action) => {
+            state.cartItem = action.payload
 
-            const isExitProduct = state.cartItem.filter(item => item._id === action.payload._id)
-            if(isExitProduct){
-                isExitProduct.quantityPurchased += 1
-            }else{
-                state.cartItem.push(action.payload)
-            }
+            // const isExitProduct = state.cartItem.filter(item => item._id === action.payload._id)
+            // if(isExitProduct){
+            //     isExitProduct.quantityPurchased += 1
+            // }else{
+            //     state.cartItem.push(action.payload)
+            // }
             // const isExitIndex = state.cartItem.findIndex(
             //     (item) => item._id === action.payload._id
             // )

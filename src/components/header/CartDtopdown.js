@@ -7,12 +7,23 @@ const CartDropdown = (props) => {
         <>
             <div className="cart__dropdown">
                 <div className="cart-list">
-                   <CartWidget />
-                   <CartWidget />
-                   <CartWidget />
+                    {
+                        props.cart &&
+                        props.cart.map((item, idx) => (
+                            <CartWidget 
+                                key={idx}
+                                id={item._id}
+                                idProduct={item.idProduct}
+                                productName={item.productName}
+                                img={item.images[0].url}
+                                cost={item.cost}
+                                quantityPurchased={item.quantityPurchased}
+                            />
+                        ))
+                    }
                 </div>
                 <div className="cart-summary">
-                    <small>3 sản phẩm</small>
+                    <small> sản phẩm</small>
                     <h5>TỔNG: 15.000đ</h5>
                 </div>
                 <div className="cart-btns">

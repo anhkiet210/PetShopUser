@@ -1,38 +1,36 @@
-import React, { useRef } from "react";
+import React from "react";
 
 const ProductImg = (props) => {
-    const refImgBig = useRef()
-
-    //handel change imgage
-    const handleChangeImg = (e) => {
-        refImgBig.current.src = e.target.src
-        console.log(document.querySelector('img-active'));
-        e.target.classList.add('img-active')
-    }
-
 
     return (
         <>
             <div className="product__img">
                 <div className="product__img-main">
-                    {
-                        props.img && 
-                        <img src={props.img[0].url} alt={props.productName} ref={refImgBig} />
-                    }
-                    {/* <img src={props.img[0].url} alt={props.productName} /> */}
-                </div>
-                <div className="product__img-list">
-                    {
-                        props.img && 
-                        props.img.slice(1, props.img.length).map((item, index) => (
-                            <div className="img-item " key={index}  >
-                                <img src={item.url} alt={item.productName}  onClick={(e) => handleChangeImg(e)} />
+                    <div id="img-main" className="carousel slide" data-ride="carousel" style={{ height: "100%" }}>
+                        <div className="carousel-inner" role="listbox" style={{ height: "100%" }}>
+                            <div className="carousel-item active" style={{ height: "100%" }}>
+                                <img src={props.img[0].url} alt="" />
                             </div>
-                        ))
-                    }
+                            {
+                                props.img &&
+                                props.img.slice(1, props.img.length).map((item, idx) => (
+                                    <div className="carousel-item" key={idx} style={{height: "100%"}}>
+                                        <img src={item.url} alt="" />
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <a className="carousel-control-prev" href="#img-main" role="button" data-slide="prev">
+                            <span className="carousel-control-prev-icon" aria-hidden="true" ><i className="fas fa-chevron-left"></i></span>
+                            <span className="sr-only">Previous</span>
+                        </a>
+                        <a className="carousel-control-next" href="#img-main" role="button" data-slide="next">
+                            <span className="carousel-control-next-icon" aria-hidden="true" ><i className="fas fa-chevron-right"></i></span>
+                            <span className="sr-only">Next</span>
+                        </a>
+                    </div>
+
                 </div>
-                <div className="pre-slide arrow"><i className="fas fa-angle-left" /></div>
-                <div className="next-slide arrow"><i className="fas fa-angle-right" /></div>
             </div>
         </>
     )

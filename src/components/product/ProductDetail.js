@@ -1,15 +1,12 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { addToCart } from "../../redux/callApi";
 
 const ProductDetail = (props) => {
-    const [quantity, setQuantity] = useState(1)
 
-    const handleIncrease = () => {
-        setQuantity(quantity + 1)
-    }
-
-    const handleDecrease = () => {
-        quantity > 1 ? setQuantity(quantity - 1) : setQuantity(1)
-    }
+    const cart = useSelector(state => state.cart.cartItem)
+    const [loading, setLoading] = useState(false)
+    const header = {x_authorization: localStorage.getItem("accessToken")}
     
     return (
         <>
@@ -26,16 +23,16 @@ const ProductDetail = (props) => {
                 </div>
                 <hr />
                 <div className="group-action">
-                    <div className="quantily">
+                    {/* <div className="quantily">
                         Số lượng
                         <div className="quantily__action">
                             <span className="add-down action" onClick={ () => handleDecrease()} ><i className="fal fa-minus" /></span>
                             <input type="number"  min={1} value={quantity} className="ip-quantily" readOnly/>
                             <span className="add-up action" onClick={ () => handleIncrease()}><i className="fal fa-plus" /></span>
                         </div>
-                    </div>
+                    </div> */}
                     {/* <div className="add-to-cart" style={{ opacity: 1, transform: 'translateY(0)' }}> */}
-                        <button className="add-to-cart-btn">
+                        <button className="add-to-cart-btn" onClick={() => addToCart(props._id, header, setLoading, cart)}>
                             <i className="fal fa-cart-plus" />
                             Thêm vào giỏ
                         </button>
