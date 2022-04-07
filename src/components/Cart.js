@@ -50,7 +50,7 @@ const Cart = () => {
         setFilterCart(test)
     }
 
-    console.log(myCart);
+    // console.log(myCart);
 
     return loading ? <Loading /> : (
         <>
@@ -73,7 +73,7 @@ const Cart = () => {
                             </thead>
                             <tbody>
                                 {
-                                    filterCart.length > 0 ?
+                                    filterCart?.length > 0 ?
                                         filterCart?.map((item, idx) => {
                                             stt++
                                             return (
