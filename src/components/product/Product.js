@@ -8,7 +8,7 @@ const Product = (props) => {
     const [loading, setLoading] = useState(false)
     const header = { x_authorization: localStorage.getItem("accessToken") }
    
-    console.log(props.myCart)
+    // console.log(props.myCart)
     return loading ? <Loading /> : (
         <div className="col-lg-3 col-md-4 col-sm-6 col-12">
             <div className="product">

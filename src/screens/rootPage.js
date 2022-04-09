@@ -29,7 +29,7 @@ const RootPage = () => {
       <Route path="/register" element= {<Register />} />
       <Route path="/" element={<Home />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/Checkout" element={<CheckoutPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/store" element={<Outlet />} >
         <Route path=":slug.:id.html" element={<StorePage />} />
       </Route>

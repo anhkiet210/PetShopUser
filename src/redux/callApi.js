@@ -50,9 +50,9 @@ export const getProductByCategory = (id, setLoading, setProductByCategory) => {
 //get profile current user
 export const getProfile = (setCurrentUser, header, setLoading) => {
     const fetchData = async () => {
-        try{
+        try {
             const res = await axios.get(
-                "https://petshop347.herokuapp.com/api/users/profile", 
+                "https://petshop347.herokuapp.com/api/users/profile",
                 {
                     headers: header
                 }
@@ -60,7 +60,7 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
             const resUser = await res.data
             setCurrentUser(resUser)
             setLoading(false)
-        }catch(err){
+        } catch (err) {
             setLoading(false)
         }
     }
@@ -71,9 +71,9 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
 //get my cart
 export const getMyCart = (header, setLoading, setMyCart, dispatch) => {
     const fetchData = async () => {
-        try{
+        try {
             setLoading(true)
-            const res = await axios.get("https://petshop347.herokuapp.com/api/carts/my-cart", 
+            const res = await axios.get("https://petshop347.herokuapp.com/api/carts/my-cart",
                 {
                     headers: header
                 }
@@ -82,7 +82,7 @@ export const getMyCart = (header, setLoading, setMyCart, dispatch) => {
             dispatch(CartSlice.actions.addToCart(resData))
             setMyCart(resData)
             setLoading(false)
-        }catch(err){
+        } catch (err) {
             setLoading(false)
         }
     }
@@ -98,21 +98,21 @@ export const addToCart = (id, header, setLoading, cart) => {
             url: `https://petshop347.herokuapp.com/api/carts/${id}`,
             headers: header
         }
-        try{
+        try {
             setLoading(true)
-            const checkExiting = cart.filter( item => item.idProduct === id)
-            if(checkExiting.length > 0){
+            const checkExiting = cart.filter(item => item.idProduct === id)
+            if (checkExiting.length > 0) {
                 setLoading(false)
                 alert("Sản phẩm đã có trong giỏ hàng")
                 return
             }
             const res = await axios(config)
-            if(res.status === 200){
+            if (res.status === 200) {
                 setLoading(false)
                 alert("Thêm sản phẩm thành công")
-                window.location.href=""
+                window.location.href = ""
             }
-        }catch(err){
+        } catch (err) {
             setLoading(false)
         }
     }
@@ -123,7 +123,7 @@ export const addToCart = (id, header, setLoading, cart) => {
 //remove product from cart
 export const removeProductFromCart = (id, setLoading, header) => {
     const func = async () => {
-        try{
+        try {
             setLoading(true)
             const config = {
                 method: "delete",
@@ -132,12 +132,55 @@ export const removeProductFromCart = (id, setLoading, header) => {
             }
             const res = await axios(config)
             console.log(res);
-            setLoading(false)
-            window.location.href=""
-        }catch(err){
+            // setLoading(false)
+            window.location.href = ""
+        } catch (err) {
             setLoading(false)
         }
     }
 
     func()
+}
+
+//get address for current user
+export const getAddress = (header, setLoading, setAllAddress) => {
+    const fetchData = async () => {
+        try {
+            setLoading(true)
+            const res = await axios.get("https://petshop347.herokuapp.com/api/address/my-address",
+                {
+                    headers: header
+                })
+            const resAddress = await res.data
+            setAllAddress(resAddress)
+            setLoading(false)
+        } catch (err) {
+            setLoading(false)
+        }
+    }
+
+    fetchData()
+}
+
+// add address
+export const addAddress = (header, address, setLoading) => {
+    const resData = async () => {
+        try {
+            var config = {
+                method: "post",
+                url: "https://petshop347.herokuapp.com/api/address",
+                headers: header,
+                data: {
+                    addressName: address
+                }
+            }
+            setLoading(true)
+            const res = await axios(config)
+            setLoading(false)
+        } catch (err) {
+            setLoading(false)
+        }
+    }
+
+    resData()
 }

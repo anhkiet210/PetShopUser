@@ -16,7 +16,17 @@ const CartWidget = (props) => {
             <div className="product__body">
                 <h3 className="product__name"><Link to={`/product/${chuyenDoiURL(props.productName)}.${props.idProduct}.html`}>{props.productName}</Link></h3>
                 <h4 className="product__price"><span className="qty">{props.quantityPurchased} x </span>{props.cost.toLocaleString("it-IT", {style: "currency", currency: "VND"})}</h4>
-                <h4 className="product__price"><span>Tổng: 15.000đ</span></h4>
+                <h4 className="product__price"><span>
+                    {
+                        (props.quantityPurchased * props.cost).toLocaleString(
+                            "it-IT",
+                            {
+                                style: "currency",
+                                currency: "VND"
+                            }
+                        )
+                    }
+                    </span></h4>
             </div>
             <button name="delete_giohang" value className="delete" onClick={() => removeProductFromCart(props.id, setLoading, header)}><i className="fas fa-times" /></button>
             <hr />

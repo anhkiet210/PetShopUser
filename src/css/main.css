@@ -867,6 +867,18 @@
     color: #000;
 }
 
+.add-address{
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-color: var(--primary-color);
+    margin-bottom: 2px;
+}
+
+.add-address:hover{
+    color: var(--white-color);
+    background-color: var(--second-color);
+}
+
 .order-details {
     position: relative;
     padding: 0px 25px 30px;
@@ -928,6 +940,7 @@
 .order-details .order-submit {
     display: block;
     margin-top: 30px;
+    width: 100%;
 }
 
 .popup-add-address{
@@ -946,8 +959,8 @@
     background-color: #fff;
     border-radius: 10px;
     transition: .5s;
-    visibility: hidden;
-    opacity: 0;
+    /* visibility: hidden;
+    opacity: 0; */
 }
 
 .popup-add-address form{

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../image/logo.png';
 import { useDispatch } from 'react-redux';
 import Loading from '../UI/Loading';
-import CartDropdown from './CartDtopdown';
+import CartDropdown from './CartDropdown';
 import UserSlice from '../../redux/userSlice';
 import { getProfile, getMyCart } from '../../redux/callApi';
 import axios from 'axios';
@@ -132,6 +132,7 @@ const Header = () => {
                                     showCart && 
                                     <CartDropdown 
                                         cart={filterCart}
+                                        handleShowCart={handleShowCart}
                                     />
                                 }
                             </div>

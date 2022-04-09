@@ -6,23 +6,30 @@ import { getProfile } from "../redux/callApi";
 
 const MyAccountPage = () => {
     const [loading, setLoading] = useState(true)
-    const [currentUser,setCurrentUser] = useState()
+    const [currentUser, setCurrentUser] = useState()
     const tokenLocal = localStorage.getItem("accessToken")
-    const header = {x_authorization: tokenLocal}
-    
-    useEffect( () => {
-        getProfile(setCurrentUser, header, setLoading)
-    },[tokenLocal])
+    const header = { x_authorization: tokenLocal }
 
-    // console.log(currentUser);
+    useEffect(() => {
+        getProfile(setCurrentUser, header, setLoading)
+    }, [tokenLocal])
 
     return loading ? <Loading /> : (
         <div className="container">
             <div className="row clearfix">
-                <Profile 
-                    infoUser = {currentUser}
-                />
-                <ChangePassword />
+                {
+                    currentUser &&
+                    <Profile
+                        infoUser={currentUser}
+                    />
+                }
+                {
+                    currentUser &&
+                    <ChangePassword 
+                        currentPass={currentUser?.password}
+                        id={currentUser?._id}
+                    />
+                }
             </div>
         </div>
     )

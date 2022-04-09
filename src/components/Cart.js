@@ -12,7 +12,13 @@ const Cart = () => {
     const dispatch = useDispatch()
     const header = { x_authorization: localStorage.getItem("accessToken") }
     const [filterCart, setFilterCart] = useState()
+    const [quantityPurchasedUpdate, setquantityPurchasedUpdate] = useState(1)
     var stt = 0
+    const totalPriceCart = filterCart?.reduce((x, y) => {
+        const { cost, discount, quantityPurchased, ...rest } = y
+        x += cost * quantityPurchased - discount
+        return x
+    }, 0)
 
     useEffect(() => {
         getMyCart(header, setLoading, setMyCart, dispatch)
@@ -50,7 +56,31 @@ const Cart = () => {
         setFilterCart(test)
     }
 
-    // console.log(myCart);
+    //get quantityPurchased Update
+    const updateQuantityCart = (e, id) => {
+        var config = {
+            method: "put",
+            url: `https://petshop347.herokuapp.com/api/carts/${id}`,
+            headers: header,
+            data:{
+                quantityPurchased: e.target.value.trim()
+            }
+        }
+
+        const resUpdate = async () => {
+            try{
+                setLoading(true)
+                const res = await axios(config)
+                window.location.href=""
+                setLoading(false)
+            }catch(err){
+                setLoading(false)
+            }
+
+        }
+
+        resUpdate()
+    }
 
     return loading ? <Loading /> : (
         <>
@@ -77,20 +107,40 @@ const Cart = () => {
                                         filterCart?.map((item, idx) => {
                                             stt++
                                             return (
-                                                <tr key={idx}>
+                                                <tr key={idx} onChange={(e) => updateQuantityCart(e, item._id)}>
                                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{stt}</td>
                                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.idProduct}</td>
                                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.productName}</td>
                                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                         <img width="50px" height="50px" src={item.images[0].url} alt={item.productName} />
                                                     </td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.cost}</td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        {
+                                                            item.cost?.toLocaleString(
+                                                                "it-IT",
+                                                                {
+                                                                    style: "currency",
+                                                                    currency: "VND"
+                                                                }
+                                                            )
+                                                        }
+                                                    </td>
                                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                         <input type="number" name="true" className="ip-quantily-cart" defaultValue={item.quantityPurchased} max={50} min={1} style={{ width: '80px' }} /><br />
                                                         {/* <span style="color:red;">Không đủ số lượng</span>
                           <input type="number" name="sl[<?=$row_giohang['idGioHang']?>]" value="<?=$SoLuong?>" max="50" min="1" style="width: 80px;"> */}
                                                     </td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.cost * item.quantityPurchased}</td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        {
+                                                            (item.cost * item.quantityPurchased).toLocaleString(
+                                                                "it-IT",
+                                                                {
+                                                                    style: "currency",
+                                                                    currency: "VND"
+                                                                }
+                                                            )
+                                                        }
+                                                    </td>
                                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                         <button name="delete_giohang" value className="delete" onClick={() => removeProductFromCart(item._id, setLoading, header)}><i className="fas fa-times" style={{ fontSize: '1.5rem' }} /></button>
                                                     </td>
@@ -105,7 +155,17 @@ const Cart = () => {
                                 <tr>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }} />
                                     <td style={{ textAlign: 'left', verticalAlign: 'middle', fontWeight: 'bold' }} colSpan={5}>TỔNG TIỀN</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', color: 'red' }}>12.000đ</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', color: 'red' }}>
+                                        {
+                                            totalPriceCart?.toLocaleString(
+                                                "it-IT",
+                                                {
+                                                    style: "currency",
+                                                    currency: "VND"
+                                                }
+                                            )
+                                        }
+                                    </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }} />
                                 </tr>
                             </tbody>
@@ -116,7 +176,7 @@ const Cart = () => {
             <div style={{ textAlign: 'right' }} className="container">
                 <Link to="/checkout" className="btn btn-primary" style={{ marginRight: '5px' }}>Đặt hàng</Link>
                 {/* <button name="dat_hang" class="btn btn-primary">Đặt hàng</button> */}
-                <button name="update_giohang" className="btn btn-info">Cập nhật</button>
+                {/* <button name="update_giohang" className="btn btn-info">Cập nhật</button> */}
             </div>
             <div style={{ textAlign: 'right' }} className="container">
                 <span style={{ color: 'red', fontWeight: 'bold' }}>* Lưu ý các sản phẩm không đủ số lượng sẽ không được thêm vào đơn hàng</span>
