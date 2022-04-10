@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
@@ -29,9 +30,12 @@ const Footer = () => {
                             <div className="text">
                                 Hãy đến với chúng tôi để trãi nghiệm sự chăm sóc tốt nhất.
                             </div>
+                            <div className="title">
+                                <Link to="/my-order" >Theo dõi đơn hàng</Link>
+                            </div>
                         </div>
                     </div>
-                    <div className="footer__bottom">Copyright © made in 2022 | This website is made with by <a href="#"> Phan Anh Kiệt</a> | <a href="#">Trần Toàn Phát</a> | <a href="#">Dương Lê Minh Hậu</a></div>
+                    <div className="footer__bottom">Copyright © made in 2022</div>
                 </div>
             </footer>
         </>

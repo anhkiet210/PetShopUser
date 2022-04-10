@@ -12,14 +12,14 @@ const Home = () => {
     const listProducts = useSelector(state => state.products.listProducts)
     const [loading, setLoading] = useState(true)
     const header = { x_authorization: localStorage.getItem("accessToken") }
-    const [cart, setCart] = useState()
+    const [cart, setCart] = useState([])
 
     useEffect(() => {
         getMyCart(header, setLoading, setCart, dispatch)
     }, [])
     useEffect(() => getAllProduct(dispatch, setLoading), [])
 
-    // console.log(cart);
+    // console.log(listProducts);
     return loading ? <Loading /> : (
         <>
             <SlideBanner />

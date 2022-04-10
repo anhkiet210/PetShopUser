@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import BillingDetail from '../components/checkout/BillingDetail';
 import OrderProduct from '../components/checkout/OrderProduct';
 import Loading from '../components/UI/Loading';
@@ -11,7 +12,7 @@ const CheckoutPage = () => {
     const [loading, setLoading] = useState(true)
     const [currentUser, setCurrentUser] = useState()
     const tokenLocal = localStorage.getItem("accessToken")
-    const [myCart, setMyCart] = useState()
+    const [myCart, setMyCart] = useState([])
     const [listProducts, setListProducts] = useState()
     const dispatch = useDispatch()
     const header = { x_authorization: tokenLocal }
@@ -101,8 +102,19 @@ const CheckoutPage = () => {
     }
 
     //change state agree
-    const handleAgree = () => {
-        setAgree(!agree)
+    const handleAgree = (e) => {
+        setAgree(e.target.checked)
+    }
+
+    //handle delete  cart
+    const handleDeleteCart = async () => {
+        for (let i = 0; i < myCart?.length; i++) {
+            const element = myCart[i];
+            console.log(element);
+            await axios.delete(`https://petshop347.herokuapp.com/api/carts/${element._id}`, {
+                headers: header
+            })
+        }
     }
 
     //handle order
@@ -127,7 +139,7 @@ const CheckoutPage = () => {
                 idCustomer: currentUser?._id,
                 address: addressOrder,
                 payments: "Thanh toán khi nhận hàng",
-                totalCost: totalPriceCart,
+                totalCost: totalPriceCart + shipCost,
                 shipCost: shipCost,
                 orderDate: orderDate,
                 productDetails: myCart
@@ -138,8 +150,9 @@ const CheckoutPage = () => {
         try{
             setLoading(true)
             await axios(config)
-            alert("Chúc mừng quý khách đã đặt hàng thành công! \n Bạn có thể theo dõi đơn hàng của mình trong mục \"Đơn hàng của tôi\". \n Cảm ơn bạn đã chọn dịch vụ của chúng tôi!")
-            window.location.href=""
+            handleDeleteCart()
+            alert("Chúc mừng quý khách đã đặt hàng thành công! \nBạn có thể theo dõi đơn hàng của mình trong mục \"Theo dõi đơn hàng\". \n Cảm ơn bạn đã đồng hành cùng PetShop!");
+            window.location.href="/my-order"
             setLoading(false)
         }catch(err){
             setLoading(false)
@@ -205,7 +218,7 @@ const CheckoutPage = () => {
                                 type="checkbox" 
                                 id="terms" 
                                 name="checkdongy" 
-                                onChange={() => handleAgree()}
+                                onChange={(e) => handleAgree(e)}
                                 />
                                 <label htmlFor="terms">
                                     <span />

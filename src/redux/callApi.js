@@ -51,6 +51,9 @@ export const getProductByCategory = (id, setLoading, setProductByCategory) => {
 export const getProfile = (setCurrentUser, header, setLoading) => {
     const fetchData = async () => {
         try {
+            if(header.x_authorization === null){
+                return
+            }
             const res = await axios.get(
                 "https://petshop347.herokuapp.com/api/users/profile",
                 {
@@ -73,6 +76,9 @@ export const getMyCart = (header, setLoading, setMyCart, dispatch) => {
     const fetchData = async () => {
         try {
             setLoading(true)
+            if(header.x_authorization === null){
+                return
+            }
             const res = await axios.get("https://petshop347.herokuapp.com/api/carts/my-cart",
                 {
                     headers: header
@@ -100,17 +106,31 @@ export const addToCart = (id, header, setLoading, cart) => {
         }
         try {
             setLoading(true)
-            const checkExiting = cart.filter(item => item.idProduct === id)
-            if (checkExiting.length > 0) {
+            if(header.x_authorization === null){
+                alert("Bạn chưa đăng nhập!")
                 setLoading(false)
-                alert("Sản phẩm đã có trong giỏ hàng")
                 return
             }
-            const res = await axios(config)
-            if (res.status === 200) {
-                setLoading(false)
-                alert("Thêm sản phẩm thành công")
-                window.location.href = ""
+            if (cart.length === 0) {
+                const res = await axios(config)
+                if (res.status === 200) {
+                    setLoading(false)
+                    alert("Thêm sản phẩm thành công")
+                    window.location.href = ""
+                }
+            } else {
+                const checkExiting = cart.filter(item => item.idProduct === id)
+                if (checkExiting.length > 0) {
+                    setLoading(false)
+                    alert("Sản phẩm đã có trong giỏ hàng")
+                    return
+                }
+                const res = await axios(config)
+                if (res.status === 200) {
+                    setLoading(false)
+                    alert("Thêm sản phẩm thành công")
+                    window.location.href = ""
+                }
             }
         } catch (err) {
             setLoading(false)
@@ -183,4 +203,44 @@ export const addAddress = (header, address, setLoading) => {
     }
 
     resData()
+}
+
+//get my order
+export const getMyOrder = (header, setLoading, setMyOrder) => {
+    const fetchData = async () => {
+        try{
+            if(header.x_authorization === null){
+                return
+            }
+            setLoading(true)
+            const res = await axios.get("https://petshop347.herokuapp.com/api/orders/my-orders", {
+                headers: header
+            })
+            const resData = await res.data
+            setMyOrder(resData)
+            setLoading(false)
+        }catch(err){
+            setLoading(false)
+        }
+    }
+
+    fetchData()
+}
+
+// get order
+export const getOrder = (id, setLoading, setOrder) => {
+    const fetchData = async () => {
+        try{
+            setLoading(true)
+            const res = await axios.get(`https://petshop347.herokuapp.com/api/orders/${id}`)
+            const resData = await res.data
+            console.log(resData);
+            setOrder(resData)
+            setLoading(false)
+        }catch(err){
+            setLoading(false)
+        }
+    }
+
+    fetchData()
 }

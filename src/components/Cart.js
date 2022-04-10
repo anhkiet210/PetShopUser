@@ -12,7 +12,6 @@ const Cart = () => {
     const dispatch = useDispatch()
     const header = { x_authorization: localStorage.getItem("accessToken") }
     const [filterCart, setFilterCart] = useState()
-    const [quantityPurchasedUpdate, setquantityPurchasedUpdate] = useState(1)
     var stt = 0
     const totalPriceCart = filterCart?.reduce((x, y) => {
         const { cost, discount, quantityPurchased, ...rest } = y

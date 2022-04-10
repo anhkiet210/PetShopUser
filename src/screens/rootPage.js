@@ -15,18 +15,20 @@ import StorePage from "./storePage";
 import { useSelector } from "react-redux";
 import Introduce from "./introduce";
 import MyAccountPage from "./myAccountPage";
+import MyOrder from "../components/myOrder/MyOrder";
+import DetailMyOrder from "../components/myOrder/DetailMyOrder";
 
 const RootPage = () => {
 
-  const currentUser = useSelector( state => state.user.currentUser)
+  const currentUser = useSelector(state => state.user.currentUser)
 
   return (
     <Routes>
-      <Route 
-        path="/login" 
+      <Route
+        path="/login"
         element={currentUser ? <Navigate to="/" /> : <Login />}
       />
-      <Route path="/register" element= {<Register />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/" element={<Home />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<CheckoutPage />} />
@@ -34,10 +36,14 @@ const RootPage = () => {
         <Route path=":slug.:id.html" element={<StorePage />} />
       </Route>
       <Route path="/product" element={<Outlet />} >
-        <Route path=":slug.:id.html" element={<ProductPage />}/>
+        <Route path=":slug.:id.html" element={<ProductPage />} />
       </Route>
       <Route path="/introduce" element={<Introduce />} />
       <Route path="/my-account" element={localStorage.getItem("accessToken") ? <MyAccountPage /> : <Navigate to="/" />} />
+      <Route path="/my-order" element={localStorage.getItem("accessToken") ? <MyOrder /> : <Navigate to="/" />} />
+      <Route path="/detail-my-order" element={<Outlet />} >
+        <Route path=":id" element={<DetailMyOrder />} />
+      </Route>
     </Routes>
   )
 }

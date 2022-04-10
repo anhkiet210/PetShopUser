@@ -1064,6 +1064,16 @@
     margin-bottom: 10px;
 }
 
+.title a{
+    display: block;
+    margin-top: 20px;
+    color: var(--white-color);
+}
+
+.title a:hover{
+    color: var(--third-color);
+}
+
 .text{
     color: var(--white-color);
     font-size: 1rem;
