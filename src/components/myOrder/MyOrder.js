@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getMyOrder } from "../../redux/callApi";
+import { getMyOrder, DeleteOrder } from "../../redux/callApi";
 import Loading from "../UI/Loading";
 
 const MyOrder = () => {
-    const [myOrder, setMyOrder] = useState([])
+    const [myOrder, setMyOrder] = useState()
     const header = { x_authorization: localStorage.getItem("accessToken") }
     const [loading, setLoading] = useState(false)
     var stt = 0
@@ -51,7 +51,12 @@ const MyOrder = () => {
                                                 <Link to={`/detail-my-order/${item._id}`}>Xem chi tiết</Link>
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <button name="delete_giohang" value className="delete" ><i className="fas fa-times" style={{ fontSize: '1.5rem' }} /></button>
+                                                <button  
+                                                className="delete" 
+                                                onClick={() => DeleteOrder(item._id, setLoading)}
+                                                >
+                                                    <i className="fas fa-times" style={{ fontSize: '1.5rem' }} />
+                                                </button>
                                             </td>
                                         </tr>
                                     )

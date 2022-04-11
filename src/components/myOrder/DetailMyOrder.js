@@ -6,7 +6,7 @@ import axios from "axios";
 
 const DetailMyOrder = () => {
     const [loading, setLoading] = useState(false)
-    const [order, setOrder] = useState({})
+    const [order, setOrder] = useState()
     const [listProducts, setListProducts] = useState()
     const params = useParams()
     const [filterProductOrder, setFilterProductOrder] = useState()
@@ -34,7 +34,7 @@ const DetailMyOrder = () => {
 
     useEffect(() => {
         filterProduct()
-    }, [])
+    }, [order])
 
     const filterProduct = () => {
         const test = []
@@ -70,7 +70,7 @@ const DetailMyOrder = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {
+                            {   filterProductOrder &&
                                 filterProductOrder?.map((item, i) => {
                                     stt++
                                     return (

@@ -107,15 +107,15 @@ const CheckoutPage = () => {
     }
 
     //handle delete  cart
-    const handleDeleteCart = async () => {
-        for (let i = 0; i < myCart?.length; i++) {
-            const element = myCart[i];
-            console.log(element);
-            await axios.delete(`https://petshop347.herokuapp.com/api/carts/${element._id}`, {
-                headers: header
-            })
-        }
-    }
+    // const handleDeleteCart = async () => {
+    //     for (let i = 0; i < myCart?.length; i++) {
+    //         const element = myCart[i];
+    //         console.log(element);
+    //         await axios.delete(`https://petshop347.herokuapp.com/api/carts/${element._id}`, {
+    //             headers: header
+    //         })
+    //     }
+    // }
 
     //handle order
     const handleOrder = async () => {
@@ -150,7 +150,14 @@ const CheckoutPage = () => {
         try{
             setLoading(true)
             await axios(config)
-            handleDeleteCart()
+            // handleDeleteCart()
+            for (let i = 0; i < myCart?.length; i++) {
+                const element = myCart[i];
+                console.log(element);
+                await axios.delete(`https://petshop347.herokuapp.com/api/carts/${element._id}`, {
+                    headers: header
+                })
+            }
             alert("Chúc mừng quý khách đã đặt hàng thành công! \nBạn có thể theo dõi đơn hàng của mình trong mục \"Theo dõi đơn hàng\". \n Cảm ơn bạn đã đồng hành cùng PetShop!");
             window.location.href="/my-order"
             setLoading(false)

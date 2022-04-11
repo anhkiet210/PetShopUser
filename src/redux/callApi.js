@@ -115,8 +115,8 @@ export const addToCart = (id, header, setLoading, cart) => {
                 const res = await axios(config)
                 if (res.status === 200) {
                     setLoading(false)
-                    alert("Thêm sản phẩm thành công")
                     window.location.href = ""
+                    alert("Thêm sản phẩm thành công")
                 }
             } else {
                 const checkExiting = cart.filter(item => item.idProduct === id)
@@ -128,8 +128,8 @@ export const addToCart = (id, header, setLoading, cart) => {
                 const res = await axios(config)
                 if (res.status === 200) {
                     setLoading(false)
-                    alert("Thêm sản phẩm thành công")
                     window.location.href = ""
+                    alert("Thêm sản phẩm thành công")
                 }
             }
         } catch (err) {
@@ -234,7 +234,7 @@ export const getOrder = (id, setLoading, setOrder) => {
             setLoading(true)
             const res = await axios.get(`https://petshop347.herokuapp.com/api/orders/${id}`)
             const resData = await res.data
-            console.log(resData);
+            // console.log(resData);
             setOrder(resData)
             setLoading(false)
         }catch(err){
@@ -243,4 +243,19 @@ export const getOrder = (id, setLoading, setOrder) => {
     }
 
     fetchData()
+}
+
+//delete order
+export const DeleteOrder = (id, setLoading) => {
+    const res = async () => {
+        try{
+            setLoading(true)
+            await axios.delete(`https://petshop347.herokuapp.com/api/orders/${id}`)
+            window.location.href=""
+        }catch(err){
+            setLoading(false)
+        }
+    }
+
+    res()
 }
