@@ -1,10 +1,10 @@
 import React from "react";
-import banner1 from "../../image/banner/1.jpg"
-import banner2 from "../../image/banner/2.jpg"
-import banner3 from "../../image/banner/3.jpg"
-import banner4 from "../../image/banner/4.jpg"
-import banner5 from "../../image/banner/5.jpg"
-import banner6 from "../../image/banner/6.jpg"
+import banner1 from "../../image/banner/1.webp"
+import banner2 from "../../image/banner/2.webp"
+import banner3 from "../../image/banner/3.webp"
+import banner4 from "../../image/banner/4.webp"
+import banner5 from "../../image/banner/5.webp"
+import banner6 from "../../image/banner/6.webp"
 
 const SlideBanner = () => {
     return (

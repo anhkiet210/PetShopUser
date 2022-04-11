@@ -71,7 +71,7 @@ const Cart = () => {
                 setLoading(true)
                 const res = await axios(config)
                 window.location.href=""
-                setLoading(false)
+                // setLoading(false)
             }catch(err){
                 setLoading(false)
             }
