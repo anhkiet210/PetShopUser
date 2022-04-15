@@ -949,8 +949,9 @@
     justify-content: center;
     width: 500px;
     position: absolute;
-    top: 329px;
-    left: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     -webkit-box-shadow: 0px 0px 10px 5px #E4E7ED;
     box-shadow: 0px 0px 10px 5px #E4E7ED;
     z-index: 12;

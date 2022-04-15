@@ -24,19 +24,13 @@ const StorePage = () => {
                             <div className="section__filter-group ">
                                 <label htmlFor="input-sort" className="control-lable">Sắp xếp theo:</label>
                                 <select name="true" id="input-sort" className="col-md-6 col-sm-12">
-                                    <option value={0}>Mặc định</option>
-                                    <option value={0}>Mặc định</option>
-                                    <option value={0}>Mặc định</option>
-                                    <option value={0}>Mặc định</option>
+                                    <option value={0}>Chức năng này đang được cập nhật</option>
                                 </select>
                             </div>
                             <div className="section__filter-group">
                                 <label htmlFor="input-limit" className="control-lable">Hiển thị:</label>
                                 <select name="true" id="input-limit" className="col-md-6 col-sm-12">
-                                    <option value={0}>8</option>
-                                    <option value={0}>12</option>
-                                    <option value={0}>16</option>
-                                    <option value={0}>20</option>
+                                    <option value={0}>Chức năng này đang được cập nhật</option>
                                 </select>
                             </div>
                         </div>

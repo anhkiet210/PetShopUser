@@ -4,7 +4,7 @@ import { getMyOrder, DeleteOrder } from "../../redux/callApi";
 import Loading from "../UI/Loading";
 
 const MyOrder = () => {
-    const [myOrder, setMyOrder] = useState()
+    const [myOrder, setMyOrder] = useState([])
     const header = { x_authorization: localStorage.getItem("accessToken") }
     const [loading, setLoading] = useState(false)
     var stt = 0
@@ -12,6 +12,8 @@ const MyOrder = () => {
     useEffect(() => {
         getMyOrder(header, setLoading, setMyOrder)
     }, [])
+
+    console.log(myOrder);
 
     return loading ? <Loading /> : (
         <div className="cart-page">
@@ -34,7 +36,7 @@ const MyOrder = () => {
                         </thead>
                         <tbody>
                             {
-                                myOrder &&
+                                myOrder && myOrder.length > 0 ?
                                 myOrder.map((item, i) => {
                                     stt++
                                     return (
@@ -60,7 +62,10 @@ const MyOrder = () => {
                                             </td>
                                         </tr>
                                     )
-                                })
+                                }) : 
+                                <tr>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', fontSize: '2rem', fontWeight: '700' }} colSpan={9}> Bạn chưa có đơn hàng nào</td>
+                                </tr>
                             }
                         </tbody>
                     </table>

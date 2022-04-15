@@ -106,6 +106,13 @@ export const addToCart = (id, header, setLoading, cart) => {
         }
         try {
             setLoading(true)
+            const resCheck = await axios.get(`https://petshop347.herokuapp.com/api/products/${id}`)
+            const qty = await resCheck.data.quantity
+            if(qty === 0){
+                alert("Sản phẩm này đã hết hàng!")
+                setLoading(false)
+                return
+            }
             if(header.x_authorization === null){
                 alert("Bạn chưa đăng nhập!")
                 setLoading(false)
@@ -115,8 +122,8 @@ export const addToCart = (id, header, setLoading, cart) => {
                 const res = await axios(config)
                 if (res.status === 200) {
                     setLoading(false)
-                    window.location.href = ""
                     alert("Thêm sản phẩm thành công")
+                    window.location.reload()
                 }
             } else {
                 const checkExiting = cart.filter(item => item.idProduct === id)
@@ -128,8 +135,8 @@ export const addToCart = (id, header, setLoading, cart) => {
                 const res = await axios(config)
                 if (res.status === 200) {
                     setLoading(false)
-                    window.location.href = ""
                     alert("Thêm sản phẩm thành công")
+                    window.location.reload()
                 }
             }
         } catch (err) {
@@ -153,7 +160,7 @@ export const removeProductFromCart = (id, setLoading, header) => {
             const res = await axios(config)
             console.log(res);
             // setLoading(false)
-            window.location.href = ""
+            window.location.reload()
         } catch (err) {
             setLoading(false)
         }
@@ -250,8 +257,8 @@ export const DeleteOrder = (id, setLoading) => {
     const res = async () => {
         try{
             setLoading(true)
-            await axios.delete(`https://petshop347.herokuapp.com/api/orders/${id}`)
-            window.location.href=""
+            await axios.delete(`https://petshop347.herokuapp.com/api/orders/${id}`);
+            window.location.reload()
         }catch(err){
             setLoading(false)
         }

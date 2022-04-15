@@ -11,20 +11,20 @@ import axios from 'axios';
 const Header = () => {
     const [loading, setLoading] = useState(true)
     // const user = useSelector(state => state.user.currentUser)
-    const [currentUser,setCurrentUser] = useState()
+    const [currentUser, setCurrentUser] = useState()
     const tokenLocal = localStorage.getItem("accessToken")
     const [showCart, setShowCart] = useState(false)
     const [myCart, setMyCart] = useState()
     const [listProducts, setListProducts] = useState()
     const dispatch = useDispatch()
-    const header = {x_authorization: tokenLocal}
+    const header = { x_authorization: tokenLocal }
     const [filterCart, setFilterCart] = useState()
 
-    useEffect( () => {
+    useEffect(() => {
         getProfile(setCurrentUser, header, setLoading)
-    },[tokenLocal])
+    }, [tokenLocal])
 
-    useEffect( () => {
+    useEffect(() => {
         getMyCart(header, setLoading, setMyCart, dispatch)
     }, [])
 
@@ -43,16 +43,16 @@ const Header = () => {
         fetchProducts()
     }, [])
 
-    useEffect( () => {
+    useEffect(() => {
         filterProduct()
     }, [myCart])
 
     const filterProduct = () => {
         const test = []
-        for(let i = 0; i < listProducts?.length; i++){
-            for(let j = 0; j < myCart?.length; j++){
-                if(listProducts[i]._id === myCart[j].idProduct){
-                    const obj = {...listProducts[i], ...myCart[j]}
+        for (let i = 0; i < listProducts?.length; i++) {
+            for (let j = 0; j < myCart?.length; j++) {
+                if (listProducts[i]._id === myCart[j].idProduct) {
+                    const obj = { ...listProducts[i], ...myCart[j] }
                     test.push(obj)
                 }
             }
@@ -69,7 +69,7 @@ const Header = () => {
         localStorage.removeItem("accessToken")
         setLoading(false);
         // <Navigate to="/" />
-        window.location.href="/"
+        window.location.href = "/"
     }
 
     // console.log(myCart);
@@ -78,7 +78,7 @@ const Header = () => {
     return (
         <>
             {loading && <Loading />}
-            <div className="container-fluid" style={{backgroundColor: '#1E1F29'}}>
+            <div className="container-fluid" style={{ backgroundColor: '#1E1F29' }}>
                 <div className="container">
                     <div className="row clearfix">
                         <div className="top__header">
@@ -89,16 +89,16 @@ const Header = () => {
                             </ul>
                             {
                                 currentUser ?
-                                <ul className="top__header-link ">
-                                    <li>
-                                        <i className="far fa-user" />  <Link to="/my-account">{currentUser && currentUser.name}</Link>
-                                    </li>
-                                </ul> :
-                                <ul className="top__header-link ">
-                                    <li>
-                                        <i className="far fa-user" />  Bạn chưa đăng nhập
-                                    </li>
-                                </ul>
+                                    <ul className="top__header-link ">
+                                        <li>
+                                            <i className="far fa-user" />  <Link to="/my-account">{currentUser && currentUser.name}</Link>
+                                        </li>
+                                    </ul> :
+                                    <ul className="top__header-link ">
+                                        <li>
+                                            <i className="far fa-user" />  Bạn chưa đăng nhập
+                                        </li>
+                                    </ul>
                             }
                         </div>
                     </div>
@@ -114,9 +114,14 @@ const Header = () => {
                         </div>
                         <div className="col-6 header__search">
                             <div className="header__search-group">
-                                <form action="true">
-                                    <input type="text" className="header__search-input" placeholder="Tìm kiếm..." />
-                                    <button type="submit" className="header__search-btn">
+                                <form >
+                                    <input
+                                        type="text"
+                                        className="header__search-input"
+                                        placeholder="Chức năng này đang được cập nhật!"
+                                        disabled
+                                    />
+                                    <button type='submit' className="header__search-btn">
                                         <i className="far fa-search" />
                                     </button>
                                 </form>
@@ -128,23 +133,23 @@ const Header = () => {
                                     <i className="fal fa-cart-plus" />  Giỏ hàng
                                     <div className="sqy">{myCart?.length || 0}</div>
                                 </button>
-                                { currentUser && 
-                                    showCart && 
-                                    <CartDropdown 
+                                {currentUser &&
+                                    showCart &&
+                                    <CartDropdown
                                         cart={filterCart}
                                         handleShowCart={handleShowCart}
                                     />
                                 }
                             </div>
                             {
-                                !currentUser ? 
-                                <Link to="/login" className="header__login">
-                                    <i className="far fa-user" /> 
-                                    Đăng nhập
-                                </Link> :
-                                <button className="header__login" onClick={() => handleLogout()}>
-                                    <i className="fas fa-sign-out"></i> Logout
-                                </button>
+                                !currentUser ?
+                                    <Link to="/login" className="header__login">
+                                        <i className="far fa-user" />
+                                        Đăng nhập
+                                    </Link> :
+                                    <button className="header__login" onClick={() => handleLogout()}>
+                                        <i className="fas fa-sign-out"></i> Logout
+                                    </button>
                             }
                         </div>
                     </div>

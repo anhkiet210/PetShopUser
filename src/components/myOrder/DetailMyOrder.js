@@ -70,7 +70,7 @@ const DetailMyOrder = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {   filterProductOrder &&
+                            {   filterProductOrder ?
                                 filterProductOrder?.map((item, i) => {
                                     stt++
                                     return (
@@ -114,7 +114,10 @@ const DetailMyOrder = () => {
                                             </td>
                                         </tr>
                                     )
-                                })
+                                }) :
+                                <tr>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={7}>Không có đơn hàng</td>
+                                </tr>
                             }
 
                         </tbody>

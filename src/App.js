@@ -6,6 +6,7 @@ import Header from './components/header/Header'
 import Navigation from './components/Navigation'
 import FeatureBox from './components/FeatureBox'
 import Footer from './components/Footer'
+import AddProduct from './components/AddProduct';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <RootPage />
       <FeatureBox />
       <Footer />
+      {/* <AddProduct /> */}
     </div>
   );
 }

@@ -6,8 +6,8 @@ const OrderProduct = (props) => {
         <>
             <div className="order-products">
                 {
-                    props?.myCart.map( (item, i) => (
-                        <OrderItem 
+                    props?.myCart.map((item, i) => (
+                        <OrderItem
                             key={i}
                             productName={item.productName}
                             cost={item.cost}
@@ -20,16 +20,22 @@ const OrderProduct = (props) => {
                     <div><strong>Tiền ship: </strong></div>
                     <div><strong className="order-total">
                         {
-                            props.myCart.length > 0 ? 
-                            props?.shipCost : 0
+                            props.myCart.length > 0 ?
+                                props?.shipCost.toLocaleString(
+                                    "it-IT",
+                                    {
+                                        style: "currency",
+                                        currency: "VND"
+                                    }
+                                ) : 0
                         }
-                        </strong></div>
+                    </strong></div>
                 </div>
                 <div className="order-col">
                     <div><strong>TỔNG TIỀN: </strong></div>
                     <div><strong className="order-total">
                         {
-                            props.totalPriceCart && 
+                            props.totalPriceCart &&
                             (props?.totalPriceCart + props?.shipCost).toLocaleString(
                                 "it-IT",
                                 {
@@ -38,7 +44,7 @@ const OrderProduct = (props) => {
                                 }
                             )
                         }
-                        </strong></div>
+                    </strong></div>
                 </div>
             </div>
         </>

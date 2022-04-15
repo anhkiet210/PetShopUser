@@ -149,7 +149,8 @@ const CheckoutPage = () => {
         
         try{
             setLoading(true)
-            await axios(config)
+            const res = await axios(config)
+            console.log(res);
             // handleDeleteCart()
             for (let i = 0; i < myCart?.length; i++) {
                 const element = myCart[i];
@@ -159,7 +160,7 @@ const CheckoutPage = () => {
                 })
             }
             alert("Chúc mừng quý khách đã đặt hàng thành công! \nBạn có thể theo dõi đơn hàng của mình trong mục \"Theo dõi đơn hàng\". \n Cảm ơn bạn đã đồng hành cùng PetShop!");
-            window.location.href="/my-order"
+            window.location.href="/"
             setLoading(false)
         }catch(err){
             setLoading(false)

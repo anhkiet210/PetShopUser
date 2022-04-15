@@ -13,12 +13,12 @@ const FakeProducts = () => {
                     <h3 className="product__name"><Link to="/">Không có sản phẩm để hiện thị</Link></h3>
                     <h4 className="product__price">000đ</h4>
                 </div>
-                <div className="add-to-cart">
+                {/* <div className="add-to-cart">
                     <button className="add-to-cart-btn">
                         <i className="fal fa-cart-plus" />
                         Thêm vào giỏ
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     )

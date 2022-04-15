@@ -17,6 +17,7 @@ import Introduce from "./introduce";
 import MyAccountPage from "./myAccountPage";
 import MyOrder from "../components/myOrder/MyOrder";
 import DetailMyOrder from "../components/myOrder/DetailMyOrder";
+import AddProduct from "../components/AddProduct";
 
 const RootPage = () => {
 
@@ -41,6 +42,7 @@ const RootPage = () => {
       <Route path="/introduce" element={<Introduce />} />
       <Route path="/my-account" element={localStorage.getItem("accessToken") ? <MyAccountPage /> : <Navigate to="/" />} />
       <Route path="/my-order" element={localStorage.getItem("accessToken") ? <MyOrder /> : <Navigate to="/" />} />
+      <Route path="/add-product" element={<AddProduct />} />
       <Route path="/detail-my-order" element={<Outlet />} >
         <Route path=":id" element={<DetailMyOrder />} />
       </Route>
