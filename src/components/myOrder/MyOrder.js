@@ -13,7 +13,7 @@ const MyOrder = () => {
         getMyOrder(header, setLoading, setMyOrder)
     }, [])
 
-    console.log(myOrder);
+    // console.log(myOrder);
 
     return loading ? <Loading /> : (
         <div className="cart-page">

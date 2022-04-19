@@ -141,7 +141,6 @@ const CheckoutPage = () => {
                 payments: "Thanh toán khi nhận hàng",
                 totalCost: totalPriceCart + shipCost,
                 shipCost: shipCost,
-                orderDate: orderDate,
                 productDetails: myCart
             }
 

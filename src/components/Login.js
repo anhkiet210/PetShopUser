@@ -39,10 +39,11 @@ const Login = () => {
             const resUser = await res.data.user
             const token = await res.data.accessToken
             dispatch(UserSlice.actions.loginSuccess(resUser))
+            // localStorage.setItem("currentUser", )
             localStorage.setItem("accessToken", token)
             setLoading(false);
-            // <Navigate to="/" />
-            window.location.href="/"
+            <Navigate to="/" />
+            // window.location.href="/"
         }catch(err){
             setLoading(false)
             setErr(true)

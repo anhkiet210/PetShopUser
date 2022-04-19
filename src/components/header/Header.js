@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import logo from '../../image/logo.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../UI/Loading';
 import CartDropdown from './CartDropdown';
 import UserSlice from '../../redux/userSlice';
@@ -10,15 +10,16 @@ import axios from 'axios';
 
 const Header = () => {
     const [loading, setLoading] = useState(true)
-    // const user = useSelector(state => state.user.currentUser)
     const [currentUser, setCurrentUser] = useState()
-    const tokenLocal = localStorage.getItem("accessToken")
     const [showCart, setShowCart] = useState(false)
     const [myCart, setMyCart] = useState()
     const [listProducts, setListProducts] = useState()
-    const dispatch = useDispatch()
-    const header = { x_authorization: tokenLocal }
     const [filterCart, setFilterCart] = useState()
+    
+    const tokenLocal = localStorage.getItem("accessToken")
+    const header = { x_authorization: tokenLocal }
+    const dispatch = useDispatch()
+    // const user = useSelector(state => state.user.currentUser)
 
     useEffect(() => {
         getProfile(setCurrentUser, header, setLoading)
@@ -72,7 +73,7 @@ const Header = () => {
         window.location.href = "/"
     }
 
-    // console.log(myCart);
+    // console.log(user);
     // console.log(filterCart);
 
     return (
@@ -142,7 +143,9 @@ const Header = () => {
                                 }
                             </div>
                             {
-                                !currentUser ?
+                                // !currentUser ?
+                                !localStorage.getItem("accessToken") ?
+                                // !user ?
                                     <Link to="/login" className="header__login">
                                         <i className="far fa-user" />
                                         Đăng nhập

@@ -118,7 +118,7 @@ export const addToCart = (id, header, setLoading, cart) => {
                 setLoading(false)
                 return
             }
-            if (cart.length === 0) {
+            if (cart?.length === 0) {
                 const res = await axios(config)
                 if (res.status === 200) {
                     setLoading(false)
@@ -126,8 +126,8 @@ export const addToCart = (id, header, setLoading, cart) => {
                     window.location.reload()
                 }
             } else {
-                const checkExiting = cart.filter(item => item.idProduct === id)
-                if (checkExiting.length > 0) {
+                const checkExiting = cart?.filter(item => item.idProduct === id)
+                if (checkExiting?.length > 0) {
                     setLoading(false)
                     alert("Sản phẩm đã có trong giỏ hàng")
                     return
@@ -141,6 +141,7 @@ export const addToCart = (id, header, setLoading, cart) => {
             }
         } catch (err) {
             setLoading(false)
+            console.log(err);
         }
     }
 
@@ -257,7 +258,7 @@ export const DeleteOrder = (id, setLoading) => {
     const res = async () => {
         try{
             setLoading(true)
-            await axios.delete(`https://petshop347.herokuapp.com/api/orders/${id}`);
+            const resData = await axios.delete(`https://petshop347.herokuapp.com/api/orders/${id}`);
             window.location.reload()
         }catch(err){
             setLoading(false)

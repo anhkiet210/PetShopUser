@@ -51,6 +51,7 @@ const DetailMyOrder = () => {
 
     // console.log(filterProductOrder);
     // console.log(order.productDetails);
+    console.log(params);
 
     return loading ? <Loading /> : (
         <div className="cart-page">

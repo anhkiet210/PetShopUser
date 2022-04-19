@@ -81,6 +81,8 @@ const Cart = () => {
         resUpdate()
     }
 
+    console.log(myCart);
+
     return loading ? <Loading /> : (
         <>
             <div className="cart-page">
@@ -102,8 +104,8 @@ const Cart = () => {
                             </thead>
                             <tbody>
                                 {
-                                    filterCart?.length > 0 ?
-                                        filterCart?.map((item, idx) => {
+                                    // filterCart?.length > 0 ?
+                                    filterCart && filterCart?.map((item, idx) => {
                                             stt++
                                             return (
                                                 <tr key={idx} onChange={(e) => updateQuantityCart(e, item._id)}>
@@ -145,10 +147,11 @@ const Cart = () => {
                                                     </td>
                                                 </tr>
                                             )
-                                        }) :
-                                        <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={8}>Không có sản phẩm trong giỏ hàng</td>
-                                        </tr>
+                                        })
+                                        //  :
+                                        // <tr>
+                                        //     <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={8}>Không có sản phẩm trong giỏ hàng</td>
+                                        // </tr>
                                 }
 
                                 <tr>
