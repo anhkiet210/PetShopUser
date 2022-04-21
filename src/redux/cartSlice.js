@@ -28,13 +28,9 @@ const CartSlice = createSlice({
             //     state.cartItem.push(action.payload)
             // }
         }, 
-        removeFromCart: (state, action) => {
-            const isExitIndex = state.cartItem.findIndex(
-                (item) => item._id === action.payload._id
-            )
-            if(isExitIndex >= 0 ){
-                state.cartItem.splice(isExitIndex, 1)
-            }
+        removeCart: (state) => {
+            state.cartItem = null
+
         },
         updateQuantity: (state, action) => {
             const isExitIndex = state.cartItem.findIndex(

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../image/logo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../UI/Loading';
@@ -7,42 +7,46 @@ import CartDropdown from './CartDropdown';
 import UserSlice from '../../redux/userSlice';
 import { getProfile, getMyCart } from '../../redux/callApi';
 import axios from 'axios';
+import { chuyenDoiURL } from '../../redux/changeText';
 
 const Header = () => {
-    const [loading, setLoading] = useState(true)
-    const [currentUser, setCurrentUser] = useState()
+    const [loading, setLoading] = useState(false)
     const [showCart, setShowCart] = useState(false)
-    const [myCart, setMyCart] = useState()
-    const [listProducts, setListProducts] = useState()
     const [filterCart, setFilterCart] = useState()
+    const  [searchText, setSearchText] = useState('')
+    // const [currentUser, setCurrentUser] = useState()
+    // const [myCart, setMyCart] = useState()
+    // const [listProducts, setListProducts] = useState()
     
     const tokenLocal = localStorage.getItem("accessToken")
-    const header = { x_authorization: tokenLocal }
+    // const header = { x_authorization: tokenLocal }
+    const currentUser = useSelector(state => state.user.currentUser) || JSON.parse(localStorage.getItem("currentUser"))
+    const listProducts = useSelector(state => state.products.listProducts) || JSON.parse(localStorage.getItem("listProducts"))
+    const myCart = useSelector(state => state.cart.cartItem) || JSON.parse(localStorage.getItem("cartItem"))
     const dispatch = useDispatch()
-    // const user = useSelector(state => state.user.currentUser)
+    const navigate = useNavigate()
+    // useEffect(() => {
+    //     getProfile(setCurrentUser, header, setLoading)
+    // }, [tokenLocal])
 
-    useEffect(() => {
-        getProfile(setCurrentUser, header, setLoading)
-    }, [tokenLocal])
+    // useEffect(() => {
+    //     getMyCart(header, setLoading, setMyCart, dispatch)
+    // }, [])
 
-    useEffect(() => {
-        getMyCart(header, setLoading, setMyCart, dispatch)
-    }, [])
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const resProducts = await axios.get(
-                    "https://petshop347.herokuapp.com/api/products"
-                )
-                setListProducts(resProducts.data)
-                setLoading(false)
-            } catch (err) {
-                setLoading(false)
-            }
-        }
-        fetchProducts()
-    }, [])
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         try {
+    //             const resProducts = await axios.get(
+    //                 "https://petshop347.herokuapp.com/api/products"
+    //             )
+    //             setListProducts(resProducts.data)
+    //             setLoading(false)
+    //         } catch (err) {
+    //             setLoading(false)
+    //         }
+    //     }
+    //     fetchProducts()
+    // }, [])
 
     useEffect(() => {
         filterProduct()
@@ -66,15 +70,28 @@ const Header = () => {
     }
 
     const handleLogout = () => {
-        dispatch(UserSlice.actions.logout(currentUser))
-        localStorage.removeItem("accessToken")
-        setLoading(false);
-        // <Navigate to="/" />
-        window.location.href = "/"
+        try {
+            dispatch(UserSlice.actions.logout(currentUser))
+            localStorage.removeItem("accessToken")
+            localStorage.removeItem("currentUser")
+            setLoading(false);
+            // <Navigate to="/" />
+            navigate('/')
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    // console.log(user);
-    // console.log(filterCart);
+    const handleGetSearchText = (e) => {
+        setSearchText(e.target.value.trim())
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        navigate(`/store/${chuyenDoiURL(searchText)}`, {state: searchText})
+        setSearchText('')
+    }
+
 
     return (
         <>
@@ -89,10 +106,10 @@ const Header = () => {
                                 <li><a href="#"><i className="fa fa-map-marker" /> Cần Thơ</a></li>
                             </ul>
                             {
-                                currentUser ?
+                                tokenLocal ?
                                     <ul className="top__header-link ">
                                         <li>
-                                            <i className="far fa-user" />  <Link to="/my-account">{currentUser && currentUser.name}</Link>
+                                            <i className="far fa-user" />  <Link to="/my-account">{currentUser?.name}</Link>
                                         </li>
                                     </ul> :
                                     <ul className="top__header-link ">
@@ -115,12 +132,14 @@ const Header = () => {
                         </div>
                         <div className="col-6 header__search">
                             <div className="header__search-group">
-                                <form >
+                                <form onSubmit={(e) => onSubmit(e)}>
                                     <input
                                         type="text"
                                         className="header__search-input"
                                         placeholder="Chức năng này đang được cập nhật!"
-                                        disabled
+                                        // disabled
+                                        defaultValue={searchText}
+                                        onChange={ (e) => handleGetSearchText(e)}
                                     />
                                     <button type='submit' className="header__search-btn">
                                         <i className="far fa-search" />
@@ -143,16 +162,15 @@ const Header = () => {
                                 }
                             </div>
                             {
-                                // !currentUser ?
-                                !localStorage.getItem("accessToken") ?
-                                // !user ?
+
+                                tokenLocal ?
+                                    <button className="header__login" onClick={() => handleLogout()}>
+                                        <i className="fas fa-sign-out"></i> Logout
+                                    </button> :
                                     <Link to="/login" className="header__login">
                                         <i className="far fa-user" />
                                         Đăng nhập
-                                    </Link> :
-                                    <button className="header__login" onClick={() => handleLogout()}>
-                                        <i className="fas fa-sign-out"></i> Logout
-                                    </button>
+                                    </Link>
                             }
                         </div>
                     </div>

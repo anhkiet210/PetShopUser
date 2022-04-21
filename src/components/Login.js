@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import '../css/login.css'
 import { Link, Navigate } from "react-router-dom";
 import Loading from "./UI/Loading";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import UserSlice from "../redux/userSlice";
 
@@ -12,7 +12,6 @@ const Login = () => {
     const [showPass, setShowPass] = useState(false)
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState(false)
-    const currentUser = useSelector( state => state.user.currentUser)
     const dispatch = useDispatch()
 
     const user = {
@@ -38,15 +37,16 @@ const Login = () => {
             const res = await axios.post("https://petshop347.herokuapp.com/api/auth/login", user)
             const resUser = await res.data.user
             const token = await res.data.accessToken
-            dispatch(UserSlice.actions.loginSuccess(resUser))
-            // localStorage.setItem("currentUser", )
+            const {_id, name, birth, email, phone, gender, permission} = resUser
+            dispatch(UserSlice.actions.loginSuccess({_id, name, birth, email, phone, gender, permission}))
+            localStorage.setItem("currentUser", JSON.stringify({_id: resUser._id, name: resUser.name, birth: resUser.birth, email: resUser.email, phone: resUser.phone, gender: resUser.gender, permission: resUser.permission}))
             localStorage.setItem("accessToken", token)
             setLoading(false);
             <Navigate to="/" />
-            // window.location.href="/"
         }catch(err){
             setLoading(false)
             setErr(true)
+            console.log(err);
         }
     }
 

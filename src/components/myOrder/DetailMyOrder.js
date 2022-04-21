@@ -3,15 +3,24 @@ import { Link, useParams } from "react-router-dom";
 import Loading from "../UI/Loading";
 import { getOrder } from "../../redux/callApi";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const DetailMyOrder = () => {
     const [loading, setLoading] = useState(false)
     const [order, setOrder] = useState()
     const [listProducts, setListProducts] = useState()
-    const params = useParams()
-    const [filterProductOrder, setFilterProductOrder] = useState()
-    var stt = 0
+    const [filterProductOrder, setFilterProductOrder] = useState([])
 
+    const params = useParams()
+    var stt = 0
+    // const selectProduct = useSelector(state => state.products.listProducts)
+    // const productSession = JSON.parse(sessionStorage.getItem("listProducts"))
+    // const listProducts = selectProduct
+    const productsDetail = order?.productDetails
+    console.log(listProducts);
+    console.log(filterProductOrder);
+    console.log(productsDetail);
+    console.log(order);
     useEffect(() => {
         getOrder(params.id, setLoading, setOrder)
     }, [])
@@ -19,6 +28,7 @@ const DetailMyOrder = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
+                setLoading(true)
                 const resProducts = await axios.get(
                     "https://petshop347.herokuapp.com/api/products"
                 )
@@ -34,24 +44,21 @@ const DetailMyOrder = () => {
 
     useEffect(() => {
         filterProduct()
-    }, [order])
+    }, [productsDetail])
 
     const filterProduct = () => {
         const test = []
         for (let i = 0; i < listProducts?.length; i++) {
-            for (let j = 0; j < order?.productDetails.length; j++) {
-                if (listProducts[i]._id === order?.productDetails[j].idProduct) {
-                    const obj = { ...listProducts[i], ...order?.productDetails[j] }
+            for (let j = 0; j < productsDetail.length; j++) {
+                if (listProducts[i]._id === productsDetail[j].idProduct) {
+                    const obj = { ...listProducts[i], ...productsDetail[j] }
                     test.push(obj)
                 }
             }
         }
+        
         setFilterProductOrder(test)
     }
-
-    // console.log(filterProductOrder);
-    // console.log(order.productDetails);
-    console.log(params);
 
     return loading ? <Loading /> : (
         <div className="cart-page">
@@ -64,14 +71,14 @@ const DetailMyOrder = () => {
                                 <th style={{ textAlign: 'center', verticalAlign: 'middle' }} scope="row">#</th>
                                 <th style={{ textAlign: 'center', verticalAlign: 'middle' }} scope="row">Mã sản phẩm</th>
                                 <th style={{ textAlign: 'center', verticalAlign: 'middle' }} scope="row">Tên sản phẩm</th>
-                                <th style={{ textAlign: 'center', verticalAlign: 'middle', width: '360px' }} scope="row">Giá sản phẩm</th>
-                                <th style={{ textAlign: 'center', verticalAlign: 'middle', width: '360px' }} scope="row">Số lượng</th>
-                                <th style={{ textAlign: 'center', verticalAlign: 'middle', width: '360px' }} scope="row">Giảm giá</th>
-                                <th style={{ textAlign: 'center', verticalAlign: 'middle', width: '125px' }} scope="row">Tổng tiền</th>
+                                <th style={{ textAlign: 'center', verticalAlign: 'middle', maxWidth: '100px' }} scope="row">Giá sản phẩm</th>
+                                <th style={{ textAlign: 'center', verticalAlign: 'middle', maxWidth: '100px' }} scope="row">Số lượng</th>
+                                <th style={{ textAlign: 'center', verticalAlign: 'middle', maxWidth: '100px' }} scope="row">Giảm giá</th>
+                                <th style={{ textAlign: 'center', verticalAlign: 'middle', maxWidth: '100px' }} scope="row">Tổng tiền</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {   filterProductOrder ?
+                            {   filterProductOrder &&
                                 filterProductOrder?.map((item, i) => {
                                     stt++
                                     return (
@@ -115,10 +122,11 @@ const DetailMyOrder = () => {
                                             </td>
                                         </tr>
                                     )
-                                }) :
-                                <tr>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={7}>Không có đơn hàng</td>
-                                </tr>
+                                }) 
+                                // :
+                                // <tr>
+                                //     <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={7}>Không có đơn hàng</td>
+                                // </tr>
                             }
 
                         </tbody>

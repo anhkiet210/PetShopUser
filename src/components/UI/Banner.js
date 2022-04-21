@@ -1,7 +1,6 @@
 import React from "react";
-import banner from "../../image/banner/7.jpg";
 
-const Banner = () => {
+const Banner = (props) => {
     return (
         <>
             {/* banner */}
@@ -10,7 +9,7 @@ const Banner = () => {
                     <div className="banner">
                         <a href="#" className="banner__link" target="_self">
                             <div className="banner__img">
-                                <img src={banner} alt="" />
+                                <img src={props?.banner} alt="" />
                             </div>
                         </a>
                     </div>

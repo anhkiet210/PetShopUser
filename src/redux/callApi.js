@@ -6,8 +6,12 @@ import ProductSlice from "./productSlice"
 export const getAllProduct = (dispatch, setLoading) => {
     const fetchData = async () => {
         try {
+            setLoading(true)
             const res = await axios.get("https://petshop347.herokuapp.com/api/products")
-            dispatch(ProductSlice.actions.getlistProducts(res.data))
+            const resData = await res.data
+            const  dataSession = JSON.stringify(resData)
+            dispatch(ProductSlice.actions.getlistProducts(resData))
+            sessionStorage.setItem("listProducts", dataSession)
             setLoading(false)
         } catch (err) {
             setLoading(false)
@@ -20,6 +24,7 @@ export const getAllProduct = (dispatch, setLoading) => {
 export const getProductById = (id, setLoading, setCurrentProduct, setIdCategory) => {
     const fetchData = async () => {
         try {
+            setLoading(true)
             const res = await axios.get(`https://petshop347.herokuapp.com/api/products/${id}`)
             setCurrentProduct(res.data)
             setIdCategory(res.data.idCategory)
@@ -36,6 +41,7 @@ export const getProductById = (id, setLoading, setCurrentProduct, setIdCategory)
 export const getProductByCategory = (id, setLoading, setProductByCategory) => {
     const fetchData = async () => {
         try {
+            setLoading(true)
             const res = await axios.get(`https://petshop347.herokuapp.com/api/products/by-category/${id}`)
             setProductByCategory(res.data)
             setLoading(false)
@@ -54,6 +60,7 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
             if(header.x_authorization === null){
                 return
             }
+            setLoading(true)
             const res = await axios.get(
                 "https://petshop347.herokuapp.com/api/users/profile",
                 {
@@ -75,17 +82,19 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
 export const getMyCart = (header, setLoading, setMyCart, dispatch) => {
     const fetchData = async () => {
         try {
-            setLoading(true)
             if(header.x_authorization === null){
                 return
             }
+            setLoading(true)
             const res = await axios.get("https://petshop347.herokuapp.com/api/carts/my-cart",
                 {
                     headers: header
                 }
             )
             const resData = await res.data.products
+            const dataSession = JSON.stringify(resData)
             dispatch(CartSlice.actions.addToCart(resData))
+            sessionStorage.setItem("cartItem", dataSession)
             setMyCart(resData)
             setLoading(false)
         } catch (err) {
@@ -141,7 +150,6 @@ export const addToCart = (id, header, setLoading, cart) => {
             }
         } catch (err) {
             setLoading(false)
-            console.log(err);
         }
     }
 
