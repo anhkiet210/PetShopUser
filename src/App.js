@@ -1,6 +1,7 @@
 import './App.css';
 import './css/base.css';
 import './css/main.css';
+import './css/responsive.css'
 import RootPage from './screens/rootPage'
 import Header from './components/header/Header'
 import Navigation from './components/Navigation'
@@ -15,7 +16,7 @@ function App() {
       <Header />
       <Navigation />
       <RootPage />
-      <FeatureBox />
+      {/* <FeatureBox /> */}
       <Footer />
       {/* <AddProduct /> */}
     </div>

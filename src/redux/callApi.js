@@ -1,6 +1,7 @@
 import axios from "axios"
 import CartSlice from "./cartSlice"
 import ProductSlice from "./productSlice"
+import UserSlice from "./userSlice"
 
 //get all product
 export const getAllProduct = (dispatch, setLoading) => {
@@ -54,7 +55,7 @@ export const getProductByCategory = (id, setLoading, setProductByCategory) => {
 }
 
 //get profile current user
-export const getProfile = (setCurrentUser, header, setLoading) => {
+export const getProfile = (dispatch, header, setLoading) => {
     const fetchData = async () => {
         try {
             if(header.x_authorization === null){
@@ -68,7 +69,8 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
                 }
             )
             const resUser = await res.data
-            setCurrentUser(resUser)
+            const {_id, name, birth, email, phone, gender, permission} = resUser
+            dispatch(UserSlice.actions.loginSuccess({_id, name, birth, email, phone, gender, permission}))
             setLoading(false)
         } catch (err) {
             setLoading(false)
@@ -79,7 +81,7 @@ export const getProfile = (setCurrentUser, header, setLoading) => {
 }
 
 //get my cart
-export const getMyCart = (header, setLoading, setMyCart, dispatch) => {
+export const getMyCart = (header, setLoading, dispatch) => {
     const fetchData = async () => {
         try {
             if(header.x_authorization === null){
@@ -92,10 +94,7 @@ export const getMyCart = (header, setLoading, setMyCart, dispatch) => {
                 }
             )
             const resData = await res.data.products
-            const dataSession = JSON.stringify(resData)
             dispatch(CartSlice.actions.addToCart(resData))
-            sessionStorage.setItem("cartItem", dataSession)
-            setMyCart(resData)
             setLoading(false)
         } catch (err) {
             setLoading(false)

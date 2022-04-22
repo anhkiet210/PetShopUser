@@ -11,7 +11,14 @@
     justify-content: space-around;
 }
 
-.pagination__wrap > button {
+.pagination__wrap .pagination__wrap-item{
+    display: flex;
+    overflow: hidden;
+}
+
+.pagination__wrap .pre,
+.pagination__wrap .next,
+.pagination__wrap .pagination__wrap-item .pagination__item{
     width: 40px;
     height: 40px;
     background-color: transparent;
@@ -35,10 +42,12 @@
     margin-right: 0;
 }
 
-.pagination__wrap > button:hover{
+.pagination__wrap .pre:hover,
+.pagination__wrap .next:hover,
+.pagination__wrap .pagination__wrap-item .pagination__item:hover{
     background-color: var(--primary-color);
 }
 
-.pagination__wrap > button.active{
+.pagination__wrap-item .pagination__item.active{
     background-color: var(--primary-color);
 }

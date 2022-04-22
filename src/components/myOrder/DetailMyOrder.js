@@ -1,45 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../UI/Loading";
-import { getOrder } from "../../redux/callApi";
+import { getAllProduct, getOrder } from "../../redux/callApi";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const DetailMyOrder = () => {
     const [loading, setLoading] = useState(false)
     const [order, setOrder] = useState()
-    const [listProducts, setListProducts] = useState()
+    // const [listProducts, setListProducts] = useState()
     const [filterProductOrder, setFilterProductOrder] = useState([])
 
     const params = useParams()
+    const dispatch = useDispatch()
     var stt = 0
-    // const selectProduct = useSelector(state => state.products.listProducts)
-    // const productSession = JSON.parse(sessionStorage.getItem("listProducts"))
-    // const listProducts = selectProduct
+    const listProducts = useSelector(state => state.products.listProducts)
     const productsDetail = order?.productDetails
     console.log(listProducts);
     console.log(filterProductOrder);
     console.log(productsDetail);
     console.log(order);
+
     useEffect(() => {
         getOrder(params.id, setLoading, setOrder)
     }, [])
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setLoading(true)
-                const resProducts = await axios.get(
-                    "https://petshop347.herokuapp.com/api/products"
-                )
-                setListProducts(resProducts.data)
-                setLoading(false)
-            } catch (err) {
-                setLoading(false)
-            }
-        }
-        fetchProducts()
-    }, [])
+    useEffect( () => { getAllProduct(dispatch, setLoading) }, [])
+
+
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         try {
+    //             setLoading(true)
+    //             const resProducts = await axios.get(
+    //                 "https://petshop347.herokuapp.com/api/products"
+    //             )
+    //             setListProducts(resProducts.data)
+    //             setLoading(false)
+    //         } catch (err) {
+    //             setLoading(false)
+    //         }
+    //     }
+    //     fetchProducts()
+    // }, [])
 
 
     useEffect(() => {
@@ -49,7 +52,7 @@ const DetailMyOrder = () => {
     const filterProduct = () => {
         const test = []
         for (let i = 0; i < listProducts?.length; i++) {
-            for (let j = 0; j < productsDetail.length; j++) {
+            for (let j = 0; j < productsDetail?.length; j++) {
                 if (listProducts[i]._id === productsDetail[j].idProduct) {
                     const obj = { ...listProducts[i], ...productsDetail[j] }
                     test.push(obj)

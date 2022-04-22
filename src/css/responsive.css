@@ -1,0 +1,14 @@
+@media (max-width: 767.98px) { 
+    .footer__body{
+        flex-direction: column;
+    }
+
+    .footer__body .contact{
+        width: 100%;
+    }
+    
+    .footer__body .about-us{
+        margin-top: 20px;
+        width: 100%;
+    }
+}

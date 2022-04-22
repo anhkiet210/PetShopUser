@@ -39,7 +39,7 @@ const Login = () => {
             const token = await res.data.accessToken
             const {_id, name, birth, email, phone, gender, permission} = resUser
             dispatch(UserSlice.actions.loginSuccess({_id, name, birth, email, phone, gender, permission}))
-            localStorage.setItem("currentUser", JSON.stringify({_id: resUser._id, name: resUser.name, birth: resUser.birth, email: resUser.email, phone: resUser.phone, gender: resUser.gender, permission: resUser.permission}))
+            // localStorage.setItem("currentUser", JSON.stringify({_id: resUser._id, name: resUser.name, birth: resUser.birth, email: resUser.email, phone: resUser.phone, gender: resUser.gender, permission: resUser.permission}))
             localStorage.setItem("accessToken", token)
             setLoading(false);
             <Navigate to="/" />

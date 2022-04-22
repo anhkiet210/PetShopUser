@@ -17,17 +17,23 @@ const Header = () => {
     // const [currentUser, setCurrentUser] = useState()
     // const [myCart, setMyCart] = useState()
     // const [listProducts, setListProducts] = useState()
-    
-    const tokenLocal = localStorage.getItem("accessToken")
-    // const header = { x_authorization: tokenLocal }
-    const currentUser = useSelector(state => state.user.currentUser) || JSON.parse(localStorage.getItem("currentUser"))
-    const listProducts = useSelector(state => state.products.listProducts) || JSON.parse(localStorage.getItem("listProducts"))
-    const myCart = useSelector(state => state.cart.cartItem) || JSON.parse(localStorage.getItem("cartItem"))
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // useEffect(() => {
-    //     getProfile(setCurrentUser, header, setLoading)
-    // }, [tokenLocal])
+    
+    const tokenLocal = localStorage.getItem("accessToken")
+    const header = { x_authorization: tokenLocal }
+    const currentUser = useSelector(state => state.user.currentUser)
+    const listProducts = useSelector(state => state.products.listProducts) || JSON.parse(localStorage.getItem("listProducts"))
+    const myCart = useSelector(state => state.cart.cartItem)
+
+    useEffect(() => {
+        getMyCart(header, setLoading, dispatch)
+    }, [])
+
+    useEffect(() => {
+        getProfile(dispatch, header, setLoading)
+    }, [tokenLocal])
 
     // useEffect(() => {
     //     getMyCart(header, setLoading, setMyCart, dispatch)
@@ -125,20 +131,20 @@ const Header = () => {
             <div className="main__header">
                 <div className="container">
                     <div className="row">
-                        <div className="col-3">
+                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6">
                             <Link to="/">
                                 <img src={logo} className="header__logo" alt="Logo Pet Shop" />
                             </Link>
                         </div>
-                        <div className="col-6 header__search">
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 header__search">
                             <div className="header__search-group">
                                 <form onSubmit={(e) => onSubmit(e)}>
                                     <input
                                         type="text"
                                         className="header__search-input"
-                                        placeholder="Chức năng này đang được cập nhật!"
+                                        placeholder="Tìm kiếm..."
                                         // disabled
-                                        defaultValue={searchText}
+                                        value={searchText}
                                         onChange={ (e) => handleGetSearchText(e)}
                                     />
                                     <button type='submit' className="header__search-btn">
@@ -147,7 +153,7 @@ const Header = () => {
                                 </form>
                             </div>
                         </div>
-                        <div className="col-3 header__cart">
+                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6 header__cart order-right" >
                             <div className="cart">
                                 <button className="cart__link" onClick={() => handleShowCart()}>
                                     <i className="fal fa-cart-plus" />  Giỏ hàng

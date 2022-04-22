@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BillingDetail from '../components/checkout/BillingDetail';
 import OrderProduct from '../components/checkout/OrderProduct';
 import Loading from '../components/UI/Loading';
@@ -10,8 +10,6 @@ import { getMyCart, getProfile, getAddress, addAddress } from '../redux/callApi'
 
 const CheckoutPage = () => {
     const [loading, setLoading] = useState(false)
-    // const [currentUser, setCurrentUser] = useState()
-    const [myCart, setMyCart] = useState([])
     const [listProducts, setListProducts] = useState()
     const [filterCart, setFilterCart] = useState()
     const [address, setAddress] = useState()
@@ -21,6 +19,7 @@ const CheckoutPage = () => {
     const [addressOrder, setAddressOrder] = useState("Chọn địa chỉ")
     
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const tokenLocal = localStorage.getItem("accessToken")
     const header = { x_authorization: tokenLocal }
     const shipCost = 30000
@@ -29,19 +28,22 @@ const CheckoutPage = () => {
         x += cost * quantityPurchased - discount
         return x
     }, 0)
-    const currentUser = useSelector(state => state.user.currentUser) || JSON.parse(localStorage.getItem("currentUser"))
+    const currentUser = useSelector(state => state.user.currentUser)
+    const myCart = useSelector(state => state.cart.cartItem)
+
+    // console.log(myCart);
 
     const handleShowPopup = () => {
         setShow(!show)
     }
 
 
-    // useEffect(() => {
-    //     getProfile(setCurrentUser, header, setLoading)
-    // }, [tokenLocal])
+    useEffect(() => {
+        getProfile(dispatch, header, setLoading)
+    }, [tokenLocal])
 
     useEffect(() => {
-        getMyCart(header, setLoading, setMyCart, dispatch)
+        getMyCart(header, setLoading, dispatch)
     }, [])
 
     useEffect(() => {
@@ -161,7 +163,8 @@ const CheckoutPage = () => {
             }
             alert("Chúc mừng quý khách đã đặt hàng thành công! \nBạn có thể theo dõi đơn hàng của mình trong mục \"Theo dõi đơn hàng\". \n Cảm ơn bạn đã đồng hành cùng PetShop!");
             localStorage.removeItem("cartItem")
-            window.location.href="/"
+            // window.location.href="/"
+            navigate("/")
             setLoading(false)
         }catch(err){
             setLoading(false)
