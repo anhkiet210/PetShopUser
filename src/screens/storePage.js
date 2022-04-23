@@ -23,7 +23,7 @@ const StorePage = () => {
     const [active, setActive] = useState(false)
 
     const [currentPage, setCurrentPage] = useState(1)
-    const productPerPage = 1
+    const productPerPage = 8    
     const indexOfLastList = currentPage * productPerPage
     const indexOfFirstList = indexOfLastList - productPerPage
     const totalPage = Math.ceil(productByCategory.length / productPerPage)
