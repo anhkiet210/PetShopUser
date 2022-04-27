@@ -2,6 +2,7 @@ import React from "react";
 import OrderItem from "./OrderItem";
 
 const OrderProduct = (props) => {
+    console.log(props );
     return (
         <>
             <div className="order-products">

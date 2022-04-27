@@ -7,12 +7,13 @@ import Loading from "./UI/Loading";
 
 const Cart = () => {
     const [loading, setLoading] = useState(false)
-    const [myCart, setMyCart] = useState()
+    // const [myCart, setMyCart] = useState()
     const [listProducts, setListProducts] = useState()
     const [filterCart, setFilterCart] = useState()
 
-    const header = { x_authorization: localStorage.getItem("accessToken") }
     const dispatch = useDispatch()
+    const header = { x_authorization: localStorage.getItem("accessToken") }
+    const myCart = useSelector(state => state.cart.cartItem)
     var stt = 0
 
     const totalPriceCart = filterCart?.reduce((x, y) => {
@@ -22,7 +23,7 @@ const Cart = () => {
     }, 0)
 
     useEffect(() => {
-        getMyCart(header, setLoading, setMyCart, dispatch)
+        getMyCart(header, setLoading, dispatch)
     }, [])
 
     useEffect(() => {

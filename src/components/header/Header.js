@@ -24,7 +24,7 @@ const Header = () => {
     const tokenLocal = localStorage.getItem("accessToken")
     const header = { x_authorization: tokenLocal }
     const currentUser = useSelector(state => state.user.currentUser)
-    const listProducts = useSelector(state => state.products.listProducts) || JSON.parse(localStorage.getItem("listProducts"))
+    const listProducts = useSelector(state => state.products.listProducts) && JSON.parse(sessionStorage.getItem("listProducts"))
     const myCart = useSelector(state => state.cart.cartItem)
 
     useEffect(() => {

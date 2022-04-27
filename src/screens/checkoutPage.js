@@ -163,16 +163,16 @@ const CheckoutPage = () => {
             }
             alert("Chúc mừng quý khách đã đặt hàng thành công! \nBạn có thể theo dõi đơn hàng của mình trong mục \"Theo dõi đơn hàng\". \n Cảm ơn bạn đã đồng hành cùng PetShop!");
             localStorage.removeItem("cartItem")
-            // window.location.href="/"
-            navigate("/")
             setLoading(false)
+            window.location.href="/"
+            // navigate("/")
         }catch(err){
             setLoading(false)
         }
 
     }
 
-    // console.log(myCart);
+    console.log(myCart);
 
     return loading ? <Loading /> :(
         <>
