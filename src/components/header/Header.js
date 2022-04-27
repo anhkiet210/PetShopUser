@@ -174,8 +174,7 @@ const Header = () => {
                                         <i className="fas fa-sign-out"></i> Logout
                                     </button> :
                                     <Link to="/login" className="header__login">
-                                        <i className="far fa-user" />
-                                        Đăng nhập
+                                        <i className="far fa-user" /> Đăng nhập
                                     </Link>
                             }
                         </div>

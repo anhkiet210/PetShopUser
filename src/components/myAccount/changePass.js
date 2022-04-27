@@ -58,12 +58,16 @@ const ChangePassword = (props) => {
         if(!bcrypt.compareSync(currentPass, props?.currentPass)){
             setErrCurrentPass(true)
             return
-        }
+        }else{
+            setErrCurrentPass(false)
+          }
 
         if(newPass !== comfirmPass){
             setErrComfirmPass(true)
             return
-        }
+        }else{
+            setErrComfirmPass(false)
+          }
 
         handleChangePass(props?.id, newPass)
 
