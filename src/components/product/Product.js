@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { chuyenDoiURL } from "../../redux/changeText";
 import { addToCart } from "../../redux/callApi";
+import { useSnackbar } from "notistack";
 import Loading from '../UI/Loading'
 
 const Product = (props) => {
     const [loading, setLoading] = useState(false)
     const header = { x_authorization: localStorage.getItem("accessToken") }
+    const { enqueueSnackbar } = useSnackbar()
+
     return loading ? <Loading /> : (
         <div className="col-lg-3 col-md-4 col-sm-6 col-12">
             <div className="product">
@@ -23,7 +26,7 @@ const Product = (props) => {
                     </h4>
                 </div>
                 <div className="add-to-cart">
-                    <button className="add-to-cart-btn" onClick={ () => addToCart(props.id, header, setLoading, props?.myCart) }>
+                    <button className="add-to-cart-btn" onClick={ () => addToCart(props.id, header, setLoading, props?.myCart, enqueueSnackbar) }>
                         <i className="fal fa-cart-plus" />
                         Thêm vào giỏ
                     </button>

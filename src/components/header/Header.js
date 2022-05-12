@@ -89,12 +89,12 @@ const Header = () => {
     }
 
     const handleGetSearchText = (e) => {
-        setSearchText(e.target.value.trim())
+        setSearchText(e.target.value)
     }
 
     const onSubmit = (e) => {
         e.preventDefault()
-        navigate(`/store/${chuyenDoiURL(searchText)}`, {state: searchText})
+        navigate(`/store/${chuyenDoiURL(searchText.trim())}`, {state: searchText.trim()})
         setSearchText('')
     }
 

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeProductFromCart, getMyCart } from "../redux/callApi";
+import { useSnackbar } from "notistack"
 import Loading from "./UI/Loading";
 
 const Cart = () => {
@@ -14,13 +15,18 @@ const Cart = () => {
     const dispatch = useDispatch()
     const header = { x_authorization: localStorage.getItem("accessToken") }
     const myCart = useSelector(state => state.cart.cartItem)
-    var stt = 0
+    const { enqueueSnackbar } = useSnackbar()
 
     const totalPriceCart = filterCart?.reduce((x, y) => {
-        const { cost, discount, quantityPurchased, ...rest } = y
+        const { cost, discount, quantityPurchased } = y
         x += cost * quantityPurchased - discount
         return x
     }, 0)
+
+    useEffect( () => {
+        window.screenTop = 0
+
+    }, [])
 
     useEffect(() => {
         getMyCart(header, setLoading, dispatch)
@@ -32,7 +38,8 @@ const Cart = () => {
                 const resProducts = await axios.get(
                     "https://petshop347.herokuapp.com/api/products"
                 )
-                setListProducts(resProducts.data)
+                const list = await resProducts.data
+                setListProducts(list)
                 setLoading(false)
             } catch (err) {
                 setLoading(false)
@@ -43,7 +50,7 @@ const Cart = () => {
 
     useEffect(() => {
         filterProduct()
-    }, [myCart])
+    }, [listProducts, myCart])
 
     const filterProduct = () => {
         const test = []
@@ -60,10 +67,18 @@ const Cart = () => {
     }
 
     // Update quantityPurchased 
-    const updateQuantityCart = (e, id) => {
+    const updateQuantityCart = (e, item) => {
+        // console.log(typeof(e.target.value));
+        if (item.quantityPurchased > item.quantity || parseInt(e.target.value) > item.quantity) {
+            enqueueSnackbar("Không đủ số lượng", {
+                variant: "warning",
+                autoHideDuration: 2000,
+            })
+            return
+        }
         var config = {
             method: "put",
-            url: `https://petshop347.herokuapp.com/api/carts/${id}`,
+            url: `https://petshop347.herokuapp.com/api/carts/${item._id}`,
             headers: header,
             data: {
                 quantityPurchased: e.target.value.trim()
@@ -79,6 +94,7 @@ const Cart = () => {
             } catch (err) {
                 setLoading(false)
                 alert("Lỗi cập nhật số lượng sản phẩm")
+                console.log(err);
             }
 
         }
@@ -86,7 +102,6 @@ const Cart = () => {
         resUpdate()
     }
 
-    console.log(filterCart);
 
     return loading ? <Loading /> : (
         <>
@@ -109,57 +124,69 @@ const Cart = () => {
                             </thead>
                             <tbody>
                                 {
-                                    // filterCart?.length > 0 ?
-                                    filterCart && filterCart?.map((item, idx) => {
-                                        stt++
-                                        return (
-                                            <tr key={idx} onChange={(e) => updateQuantityCart(e, item._id)}>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{stt}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.idProduct}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.productName}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    <img width="50px" height="50px" src={item.images[0].url} alt={item.productName} />
-                                                </td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    {
-                                                        item.cost?.toLocaleString(
-                                                            "it-IT",
-                                                            {
-                                                                style: "currency",
-                                                                currency: "VND"
-                                                            }
-                                                        )
-                                                    }
-                                                </td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    <input type="number" name="true" className="ip-quantily-cart" defaultValue={item.quantityPurchased} max={50} min={1} style={{ width: '80px' }} /><br />
-                                                    {
-                                                        item.quantityPurchased > item.quantity &&
-                                                        <span style="color:red;">Không đủ số lượng</span>
-                                                    }
-                          {/* <input type="number" name="sl[<?=$row_giohang['idGioHang']?>]" value="<?=$SoLuong?>" max="50" min="1" style="width: 80px;"> */}
-                                                </td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    {
-                                                        (item.cost * item.quantityPurchased).toLocaleString(
-                                                            "it-IT",
-                                                            {
-                                                                style: "currency",
-                                                                currency: "VND"
-                                                            }
-                                                        )
-                                                    }
-                                                </td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    <button name="delete_giohang" value className="delete" onClick={() => removeProductFromCart(item._id, setLoading, header)}><i className="fas fa-times" style={{ fontSize: '1.5rem' }} /></button>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })
-                                    //  :
-                                    // <tr>
-                                    //     <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={8}>Không có sản phẩm trong giỏ hàng</td>
-                                    // </tr>
+                                    filterCart?.length > 0 ?
+                                        filterCart && filterCart?.map((item, idx) => {
+                                            return (
+                                                <tr key={idx} onChange={(e) => updateQuantityCart(e, item)}>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{idx + 1}</td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.idProduct}</td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.productName}</td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        <img width="50px" height="50px" src={item.images[0].url} alt={item.productName} />
+                                                    </td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        {
+                                                            item.cost?.toLocaleString(
+                                                                "it-IT",
+                                                                {
+                                                                    style: "currency",
+                                                                    currency: "VND"
+                                                                }
+                                                            )
+                                                        }
+                                                    </td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        <input type="number" name="true" className="ip-quantily-cart" defaultValue={item.quantityPurchased} max={item.quantity} min={1} style={{ width: '80px' }} /><br />
+                                                        {
+                                                            item.quantityPurchased > item.quantity ?
+                                                                <span style={{ color: "red" }}>Không đủ số lượng</span> : ""
+                                                        }
+                                                        {/* <input type="number" name="sl[<?=$row_giohang['idGioHang']?>]" value="<?=$SoLuong?>" max="50" min="1" style="width: 80px;"> */}
+                                                    </td>
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        {
+                                                            (item.cost * item.quantityPurchased).toLocaleString(
+                                                                "it-IT",
+                                                                {
+                                                                    style: "currency",
+                                                                    currency: "VND"
+                                                                }
+                                                            )
+                                                        }
+                                                    </td>
+                                                    {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        <button
+                                                            className="btn btn-info"
+                                                            onClick={() => removeProductFromCart(item._id, setLoading, header)}
+                                                        >
+                                                            Cập nhật
+                                                        </button>
+                                                    </td> */}
+                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        <button
+                                                            className="delete"
+                                                            onClick={() => removeProductFromCart(item._id, setLoading, header)}
+                                                        >
+                                                            <i className="fas fa-times" style={{ fontSize: '1.5rem' }} />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                        :
+                                        <tr>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={8}>Không có sản phẩm trong giỏ hàng</td>
+                                        </tr>
                                 }
 
                                 <tr>

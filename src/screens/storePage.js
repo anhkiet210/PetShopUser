@@ -20,24 +20,29 @@ const StorePage = () => {
     const listItemRef = useRef()
     const listProducts = useSelector(state => state.products.listProducts)
     const [productsSeatch, setProductsSearch] = useState([])
-    const [active, setActive] = useState(false)
 
     const [currentPage, setCurrentPage] = useState(1)
     const productPerPage = 8    
     const indexOfLastList = currentPage * productPerPage
     const indexOfFirstList = indexOfLastList - productPerPage
-    const totalPage = Math.ceil(productByCategory.length / productPerPage)
-    const currentListProducts = productsSeatch.length > 0 ? productsSeatch.slice(indexOfFirstList, indexOfLastList) : productByCategory.slice(indexOfFirstList, indexOfLastList)
-    // const [currentListProducts, setCurrentListProducts] = useState(productsSeatch.length > 0 ? productsSeatch.slice(indexOfFirstList, indexOfLastList) : productByCategory.slice(indexOfFirstList, indexOfLastList))
-
-    // console.log(totalPage);
+    const currentListProducts = productsSeatch.length > 0 ? 
+                                productsSeatch : 
+                                productByCategory
+    const totalPage = Math.ceil(currentListProducts.length / productPerPage)
 
     useEffect(() => {
         const temp = listProducts.filter((item) => item.productName?.toLowerCase().includes(state?.toLowerCase()))
         setProductsSearch(temp)
     }, [state])
+
+    useEffect( () => {
+        window.scrollTo({top: 0})
+    }, [])
+
+   
     //get all products
     useEffect(() => { getAllProduct(dispatch, setLoading) }, [])
+
     //get product by category
     useEffect(() => getProductByCategory(params.id, setLoading, setProductByCategory), [params.id])
 
@@ -71,16 +76,6 @@ const StorePage = () => {
         }
     }
 
-    const handlePagination = (e) => {
-        // console.log(e.target);
-        setCurrentPage(parseInt(e.target.value))
-        if (e.target) {
-            document.querySelector('.pagination__item.active').classList.remove('active')
-            // listItemRef.current.classList.add("active")
-            e.target.classList.add("active")
-        }
-        // console.log(listItemRef.current.length);
-    }
 
     const handlePrePage = (e) => {
         if (currentPage > 1) {
@@ -143,27 +138,27 @@ const StorePage = () => {
                             // }
                             // {
                             currentListProducts && currentListProducts.length > 0 ?
-                                currentListProducts.map((item, index) => (
-                                    <Product
-                                        key={index}
-                                        id={item._id}
-                                        productName={item.productName}
-                                        cost={item.cost}
-                                        img={item.images[0]}
-                                    />
-                                )) :
-                                <>
+                                currentListProducts.slice(indexOfFirstList, indexOfLastList)
+                                                    .map((item, index) => (
+                                                        <Product
+                                                            key={index}
+                                                            id={item._id}
+                                                            productName={item.productName}
+                                                            cost={item.cost}
+                                                            img={item.images[0]}
+                                                        />
+                                                    )) :
+                                                    <>
 
-                                    <FakeProducts />
-                                    <FakeProducts />
-                                    <FakeProducts />
-                                    <FakeProducts />
-                                </>
+                                                        <FakeProducts />
+                                                        <FakeProducts />
+                                                        <FakeProducts />
+                                                        <FakeProducts />
+                                                    </>
                         }
                     </div>
                     < Pagination
                         totalPage={totalPage}
-                        handlePagination={handlePagination}
                         handlePrePage={handlePrePage}
                         handleNextPage={handleNextPage}
                         currentPage={currentPage}

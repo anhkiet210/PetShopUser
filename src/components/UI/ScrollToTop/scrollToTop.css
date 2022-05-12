@@ -1,0 +1,22 @@
+.scroll-to-top{
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    bottom: 50px;
+    right: 50px;
+    font-size: 1.5rem;
+    color: #000;
+    background-color: var(--light-bg);
+    border: none;
+    border-radius: 50%;
+    outline: none;
+    transition: 0.4s linear;
+}
+
+.scroll-to-top:focus{
+    outline: none;
+}
+
+.scroll-to-top:hover{
+    opacity: 0.7;
+}

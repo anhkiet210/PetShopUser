@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { addToCart } from "../../redux/callApi";
+import { useSnackbar } from "notistack";
+import Loading from "../UI/Loading";
 
 const ProductDetail = (props) => {
 
     const cart = useSelector(state => state.cart.cartItem)
     const [loading, setLoading] = useState(false)
     const header = {x_authorization: localStorage.getItem("accessToken")}
+    const { enqueueSnackbar } = useSnackbar()
+
     
-    return (
+    return loading ? <Loading /> : (
         <>
             <div className="product__detail">
                 <div className="product__detail-name">{props.productName}</div>
@@ -32,7 +36,7 @@ const ProductDetail = (props) => {
                         </div>
                     </div> */}
                     {/* <div className="add-to-cart" style={{ opacity: 1, transform: 'translateY(0)' }}> */}
-                        <button className="add-to-cart-btn" onClick={() => addToCart(props._id, header, setLoading, cart)}>
+                        <button className="add-to-cart-btn" onClick={() => addToCart(props?.idProduct, header, setLoading, cart, enqueueSnackbar)}>
                             <i className="fal fa-cart-plus" />
                             Thêm vào giỏ
                         </button>
@@ -46,6 +50,8 @@ const ProductDetail = (props) => {
                     <li><a href="#"><i className="fab fa-google-plus" /></a></li>
                     <li><a href="#"><i className="far fa-envelope" /></a></li>
                 </ul>
+                <hr />
+                <span>Số lượng còn lại: {props.qty}</span>
             </div>
         </>
     )

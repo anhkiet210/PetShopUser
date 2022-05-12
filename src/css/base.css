@@ -237,3 +237,7 @@ input[type="file"]{
     outline: none;
     border: none;
 }
+
+.table-responsive{
+    display: inline-table !important;
+}

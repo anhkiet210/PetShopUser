@@ -9,12 +9,6 @@ const Pagination = (props) => {
         pageNumbers.push(i)
     }
 
-    useEffect ( () => {
-        const list = window.document.querySelector('.pagination__wrap-item .pagination__item')
-        // console.log(typeof(list));
-    }, [])
-
-    // console.log(pageNumbers);
 
     return (
         <div className="pagination" >
@@ -24,19 +18,21 @@ const Pagination = (props) => {
                     <button className="pre" onClick={(e) => props?.handlePrePage(e)}><i className="fas fa-angle-left"></i></button>
                 }
                 <div className="pagination__wrap-item" ref={props?.itemRef}>
-                    <button className="pagination__item active" value={1} onClick={(e) => props?.handlePagination(e)}>1</button>
+                    {/* <button className="pagination__item active" value={1} onClick={(e) => props?.handlePagination(e)}>1</button> */}
                     {
                         pageNumbers &&
-                        pageNumbers.slice(1, pageNumbers.length).map((item, i) => (
-                            <button
-                                
-                                className="pagination__item"
-                                type="button"
-                                value={item}
-                                onClick={(e) => props?.handlePagination(e)}
-                                key={i}
-                            >{item}</button>
-                        ))
+                        pageNumbers
+                            .map((item, i) => (
+                                <button
+                                    className={`pagination__item ${i+1  === props.currentPage ? 'active' : null}`}
+                                    type="button"
+                                    value={item}
+                                    onClick={(e) => props?.handlePagination(e)}
+                                    key={i}
+                                >
+                                    {item}
+                                </button>
+                            ))
                     }
                 </div>
                 {

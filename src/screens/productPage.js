@@ -15,6 +15,8 @@ const ProductPage = () => {
     const [productByCategory, setProductByCategory] = useState()
     const [idCategory, setIdCategory] = useState()
 
+    useEffect( () => { window.scrollTo({top: 0}) }, [])
+
     //get current product
     useEffect( () => getProductById(params.id, setLoading, setCurrentProduct, setIdCategory), [params.id])
     //get related products
@@ -41,6 +43,7 @@ const ProductPage = () => {
                                 idProduct = {currentProduct._id} 
                                 productName={currentProduct.productName}
                                 cost={currentProduct.cost}
+                                qty={currentProduct.quantity}
                             />
                         }
                     </div>

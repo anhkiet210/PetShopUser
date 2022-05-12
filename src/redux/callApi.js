@@ -105,7 +105,7 @@ export const getMyCart = (header, setLoading, dispatch) => {
 }
 
 // add to cart
-export const addToCart = (id, header, setLoading, cart) => {
+export const addToCart = (id, header, setLoading, cart, enqueueSnackbar) => {
     const reqAddToCart = async () => {
         const config = {
             method: "post",
@@ -114,15 +114,24 @@ export const addToCart = (id, header, setLoading, cart) => {
         }
         try {
             setLoading(true)
+            // console.log(cart);
             const resCheck = await axios.get(`https://petshop347.herokuapp.com/api/products/${id}`)
             const qty = await resCheck.data.quantity
             if(qty === 0){
-                alert("Sản phẩm này đã hết hàng!")
+                // alert("Sản phẩm này đã hết hàng!")
+                enqueueSnackbar("Sản phẩm đã hết hàng", {
+                    variant: "warning", 
+                    autoHideDuration: 2000,
+                })
                 setLoading(false)
                 return
             }
             if(header.x_authorization === null){
-                alert("Bạn chưa đăng nhập!")
+                // alert("Bạn chưa đăng nhập!")
+                enqueueSnackbar("Bạn chưa đăng nhập", {
+                    variant: "warning",
+                    autoHideDuration: 2000,
+                })
                 setLoading(false)
                 return
             }
@@ -130,25 +139,36 @@ export const addToCart = (id, header, setLoading, cart) => {
                 const res = await axios(config)
                 if (res.status === 200) {
                     setLoading(false)
-                    alert("Thêm sản phẩm thành công")
+                    // alert("Thêm sản phẩm thành công")
+                    enqueueSnackbar("Thêm sản phẩm vào giỏ thành công", {
+                        variant: "success",
+                        autoHideDuration: 2000,
+                    })
                     window.location.reload()
                 }
             } else {
                 const checkExiting = cart?.filter(item => item.idProduct === id)
                 if (checkExiting?.length > 0) {
                     setLoading(false)
-                    alert("Sản phẩm đã có trong giỏ hàng")
+                    // alert("Sản phẩm đã có trong giỏ hàng")
+                    enqueueSnackbar("Sản phẩm đã có trong giỏ hàng", {
+                        variant: "warning", 
+                        autoHideDuration: 2000,
+                    })
                     return
                 }
-                const res = await axios(config)
-                if (res.status === 200) {
-                    setLoading(false)
-                    alert("Thêm sản phẩm thành công")
-                    window.location.reload()
-                }
+                await axios(config)
+                setLoading(false)
+                // alert("Thêm sản phẩm thành công")
+                window.location.reload()
+                enqueueSnackbar("Thêm sản phẩm vào giỏ thành công", {
+                    variant: "success",
+                    autoHideDuration: 2000,
+                })
             }
         } catch (err) {
             setLoading(false)
+            console.log(err);
         }
     }
 

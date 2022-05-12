@@ -12,11 +12,13 @@ const Profile = (props) => {
     const [gender, setGender] = useState()
     const token = localStorage.getItem("accessToken")
 
+    console.log(props);
+
     useEffect(() => {
         setName(props.infoUser?.name)
         setEmail(props.infoUser?.email)
         setPhone(props.infoUser?.phone)
-        setBirth(props.infoUser?.birth.slice(0, 10))
+        setBirth(props.infoUser?.birth?.slice(0, 10))
         setGender(props.infoUser?.gender)
     }, [])
 

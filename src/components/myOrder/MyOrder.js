@@ -9,6 +9,13 @@ const MyOrder = () => {
     const [loading, setLoading] = useState(false)
     var stt = 0
 
+    useEffect( () => {
+        window.scrollTo({
+            top: 0, 
+            behavior: "smooth"
+        })
+    }, [])
+
     useEffect(() => {
         getMyOrder(header, setLoading, setMyOrder)
     }, [])

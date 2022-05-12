@@ -91,7 +91,23 @@ const Register = () => {
                                     type={showPass ? "text" : "password"} 
                                     className="input" 
                                     name="password" 
-                                    placeholder="Password" 
+                                    placeholder="Mật khẩu" 
+                                    required 
+                                    onChange={(e) => getPasword(e)}
+                                />
+                                {/* <input 
+                                    type="checkbox" 
+                                    id="show-pass" 
+                                    className="show-pass"
+                                /> */}
+                                <label className="label-show-pass" htmlFor="show-pass"onClick={() => handleShowPass()}><i className="fas fa-eye"></i></label>
+                            </div>
+                            <div className="form-pass">
+                                <input 
+                                    type={showPass ? "text" : "password"} 
+                                    className="input" 
+                                    name="password" 
+                                    placeholder="Xác nhận mật khẩu" 
                                     required 
                                     onChange={(e) => getPasword(e)}
                                 />

@@ -1,0 +1,27 @@
+.thanks {
+    margin: 50px auto;
+    text-align: center;
+}
+
+.follow-order{
+    color: var(--primary-color);
+    font-style: italic;
+}
+
+.follow-order:hover{
+    color: var(--second-color);
+}
+
+.continue{
+    padding: 10px ;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    border-radius: 6px;
+    display: inline-block;
+    color: var(--text-color);
+}
+
+.continue:hover{
+    color: var(--text-color);
+    background-color: var(--light-bg);
+}

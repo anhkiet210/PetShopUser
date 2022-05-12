@@ -6,6 +6,7 @@ import BillingDetail from '../components/checkout/BillingDetail';
 import OrderProduct from '../components/checkout/OrderProduct';
 import Loading from '../components/UI/Loading';
 import { getMyCart, getProfile, getAddress, addAddress } from '../redux/callApi';
+import {useSnackbar} from 'notistack'
 
 
 const CheckoutPage = () => {
@@ -16,10 +17,12 @@ const CheckoutPage = () => {
     const [allAddress, setAllAddress] = useState([])
     const [show, setShow] = useState(false)
     const [agree, setAgree] = useState(false)
+    const [isAddAddress, setIsAddAddress] = useState()
     const [addressOrder, setAddressOrder] = useState("Chọn địa chỉ")
     
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {enqueueSnackbar} = useSnackbar()
     const tokenLocal = localStorage.getItem("accessToken")
     const header = { x_authorization: tokenLocal }
     const shipCost = 30000
@@ -48,7 +51,7 @@ const CheckoutPage = () => {
 
     useEffect(() => {
         getAddress(header, setLoading, setAllAddress)
-    }, [])
+    }, [isAddAddress])
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -67,7 +70,7 @@ const CheckoutPage = () => {
 
     useEffect(() => {
         filterProduct()
-    }, [myCart])
+    }, [listProducts, myCart])
 
     const filterProduct = () => {
         const test = []
@@ -97,11 +100,15 @@ const CheckoutPage = () => {
         e.preventDefault()
         allAddress.map(item => {
             if(item.addressName === address)
-            alert("Địa chỉ đã tồn tại")
+            // alert("Địa chỉ đã tồn tại")
+            enqueueSnackbar("Địa chỉ đã tồn tại", {
+                variant: "warning",
+                autoHideDuration: 2000,
+            })
             return
         })
         addAddress(header, address, setLoading)
-        // console.log(address);
+        setIsAddAddress()
     }
 
     //change state agree
@@ -123,15 +130,27 @@ const CheckoutPage = () => {
     //handle order
     const handleOrder = async () => {
         if(myCart.length === 0){
-            alert("Bạn không có sản phẩm nào cần thanh toán!")
+            // alert("Bạn không có sản phẩm nào cần thanh toán!")
+            enqueueSnackbar("Bạn không có sản phẩm nào cần thanh toán", {
+                variant: "warning",
+                autoHideDuration: 2000,
+            })
             return
         }
         if(agree === false){
-            alert("Bạn chưa đồng ý với điều khoản của chúng tôi!")
+            // alert("Bạn chưa đồng ý với điều khoản của chúng tôi!")
+            enqueueSnackbar("Bạn chưa đồng ý với điều khoản của chúng tôi!", {
+                variant: "warning",
+                autoHideDuration: 2000,
+            })
             return
         }
         if(addressOrder === "Chọn địa chỉ"){
-            alert("Bạn chưa chọn địa chỉ giao hàng!")
+            // alert("Bạn chưa chọn địa chỉ giao hàng!")
+            enqueueSnackbar("Bạn chưa chọn địa chỉ giao hàng!", {
+                variant: "warning",
+                autoHideDuration: 2000,
+            })
             return
         }
         var config ={
@@ -161,18 +180,23 @@ const CheckoutPage = () => {
                     headers: header
                 })
             }
-            alert("Chúc mừng quý khách đã đặt hàng thành công! \nBạn có thể theo dõi đơn hàng của mình trong mục \"Theo dõi đơn hàng\". \n Cảm ơn bạn đã đồng hành cùng PetShop!");
+            // alert("Chúc mừng quý khách đã đặt hàng thành công! \nBạn có thể theo dõi đơn hàng của mình trong mục \"Theo dõi đơn hàng\". \n Cảm ơn bạn đã đồng hành cùng PetShop!");
             localStorage.removeItem("cartItem")
             setLoading(false)
-            window.location.href="/"
-            // navigate("/")
+            window.location.href="/thanks"
+            // navigate("/thanks")
         }catch(err){
             setLoading(false)
+            console.log(err)
+            enqueueSnackbar("Lỗi đặt hàng, hãy thử lại sau!", {
+                variant: "error",
+                autoHideDuration: 2000,
+            })
         }
 
     }
 
-    console.log(myCart);
+    // console.log(myCart);
 
     return loading ? <Loading /> :(
         <>

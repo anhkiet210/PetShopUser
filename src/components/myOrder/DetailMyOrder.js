@@ -13,7 +13,6 @@ const DetailMyOrder = () => {
 
     const params = useParams()
     const dispatch = useDispatch()
-    var stt = 0
     const listProducts = useSelector(state => state.products.listProducts)
     const productsDetail = order?.productDetails
     console.log(listProducts);
@@ -21,45 +20,35 @@ const DetailMyOrder = () => {
     console.log(productsDetail);
     console.log(order);
 
-    useEffect(() => {
-        getOrder(params.id, setLoading, setOrder)
+    useEffect( () => {
+        window.scrollTo({
+            top: 0, 
+            behavior: "smooth"
+        })
     }, [])
 
-    useEffect( () => { getAllProduct(dispatch, setLoading) }, [])
+    useEffect(() => {
+        getOrder(params.id, setLoading, setOrder)
+    }, [params.id])
 
-
-    // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         try {
-    //             setLoading(true)
-    //             const resProducts = await axios.get(
-    //                 "https://petshop347.herokuapp.com/api/products"
-    //             )
-    //             setListProducts(resProducts.data)
-    //             setLoading(false)
-    //         } catch (err) {
-    //             setLoading(false)
-    //         }
-    //     }
-    //     fetchProducts()
-    // }, [])
+    useEffect(() => { getAllProduct(dispatch, setLoading) }, [])
 
 
     useEffect(() => {
         filterProduct()
-    }, [productsDetail])
+    }, [order, listProducts])
 
     const filterProduct = () => {
         const test = []
         for (let i = 0; i < listProducts?.length; i++) {
             for (let j = 0; j < productsDetail?.length; j++) {
-                if (listProducts[i]._id === productsDetail[j].idProduct) {
+                if (listProducts[i]?._id === productsDetail[j]?.idProduct) {
                     const obj = { ...listProducts[i], ...productsDetail[j] }
                     test.push(obj)
                 }
             }
         }
-        
+
         setFilterProductOrder(test)
     }
 
@@ -81,12 +70,11 @@ const DetailMyOrder = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {   filterProductOrder &&
+                            {filterProductOrder &&
                                 filterProductOrder?.map((item, i) => {
-                                    stt++
                                     return (
                                         <tr key={i}>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{stt}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{i + 1}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.idProduct}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{item.productName}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
@@ -125,7 +113,7 @@ const DetailMyOrder = () => {
                                             </td>
                                         </tr>
                                     )
-                                }) 
+                                })
                                 // :
                                 // <tr>
                                 //     <td style={{ textAlign: 'center', verticalAlign: 'middle' }} colSpan={7}>Không có đơn hàng</td>
