@@ -35,6 +35,7 @@ const BillingDetail = (props) => {
                 name="sodienthoai" 
                 placeholder="Số điện thoại"
                 defaultValue={props.infoUser?.phone}
+                disabled
                 />
             </div>
             <div className="form-group">

@@ -171,7 +171,7 @@ const CheckoutPage = () => {
         try{
             setLoading(true)
             const res = await axios(config)
-            console.log(res);
+            // console.log(res);
             // handleDeleteCart()
             for (let i = 0; i < myCart?.length; i++) {
                 const element = myCart[i];
